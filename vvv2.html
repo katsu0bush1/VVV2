@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ヴヴヴ2">
+<title>ヴァルヴレイヴ2</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overscroll-behavior:none}
+body{background:#04060e;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
+button{touch-action:manipulation;font-family:inherit;cursor:pointer;border:none;outline:none}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
+input[type=number]{-moz-appearance:textfield}
+
+#W{max-width:520px;margin:0 auto;display:flex;flex-direction:column;height:100vh;height:100dvh;padding-top:env(safe-area-inset-top,0px)}
+
+#hdr{background:rgba(10,6,24,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 14px 8px;border-bottom:1px solid rgba(200,60,60,.2);flex-shrink:0}
+.hr{display:flex;align-items:center;justify-content:space-between}
+.ht{font-size:16px;font-weight:900;background:linear-gradient(135deg,#ff3d3d,#ff8a3d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.5px}
+.hs{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px}
+.hb{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,100,100,.08);border:1px solid rgba(255,100,100,.2);color:#ff8a80;backdrop-filter:blur(10px)}
+.hb.p{background:rgba(255,50,50,.15);border-color:rgba(255,50,50,.4);color:#ff5252}
+.cfm{margin-top:6px;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;backdrop-filter:blur(10px)}
+
+.qs{display:flex;gap:5px;flex-wrap:wrap;padding:6px 14px;background:rgba(6,6,16,.95);border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;flex-shrink:0}
+.qc{background:rgba(255,255,255,.04);border-radius:8px;padding:4px 8px;border:1px solid rgba(255,255,255,.06)}
+.ql{color:rgba(255,255,255,.3);margin-right:3px}.qv{color:#ef9a9a;font-weight:600}.qe{font-weight:700}
+
+#tabs{display:flex;background:rgba(10,10,18,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
+.tb{flex:1;padding:8px 0 6px;text-align:center;font-size:9px;font-weight:600;color:rgba(255,255,255,.3);transition:color .15s}
+.tb.a{color:#ff5252}
+.tb-ic{font-size:18px;display:block;margin-bottom:2px}
+
+#ct{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#04060e}
+
+.inp{padding:12px 14px}
+.ig{display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap}
+.ig label{font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap;font-weight:600}
+.ig input{width:72px;height:36px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#ef9a9a;font-size:15px;font-weight:700;text-align:center;outline:none;font-family:monospace;transition:border-color .15s}
+.ig input:focus{border-color:rgba(239,154,154,.5);background:rgba(255,255,255,.08)}
+.tot{font-size:10px;color:rgba(255,255,255,.25)}
+
+.eg{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:10px}
+.eb{padding:10px 2px;border-radius:10px;font-size:11px;font-weight:700;text-align:center;line-height:1.2;transition:all .1s;border:1px solid transparent}
+.eb:active{transform:scale(.95)}
+.eb.s{border-color:#ff5252;box-shadow:0 0 12px rgba(255,82,82,.2)}
+.e-cz{background:rgba(100,181,246,.12);color:#64b5f6;border-color:rgba(100,181,246,.15)}
+.e-kaku{background:rgba(239,83,80,.12);color:#ef5350;border-color:rgba(239,83,80,.15)}
+.e-kess{background:rgba(255,167,38,.12);color:#ffa726;border-color:rgba(255,167,38,.15)}
+.e-at{background:rgba(206,147,216,.12);color:#ce93d8;border-color:rgba(206,147,216,.15)}
+.e-sat{background:rgba(234,128,252,.12);color:#ea80fc;border-color:rgba(234,128,252,.15)}
+.e-atend{background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.06)}
+.e-hara{background:rgba(255,213,79,.12);color:#ffd54f;border-color:rgba(255,213,79,.15)}
+.e-bar{background:rgba(129,199,132,.12);color:#81c784;border-color:rgba(129,199,132,.15)}
+.e-other{background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.05)}
+
+.dt{margin-bottom:8px}
+.dt-t{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px;font-weight:600}
+.dt-r{display:flex;gap:4px;flex-wrap:wrap}
+.dt-b{padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);transition:all .1s}
+.dt-b.s{border-color:rgba(255,82,82,.5);color:#ff5252;background:rgba(255,82,82,.08)}
+.dt-b:active{transform:scale(.96)}
+.dt-f{width:100%;height:32px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#ccc;font-size:12px;padding:0 10px;outline:none;font-family:inherit;transition:border-color .15s}
+.dt-f:focus{border-color:rgba(239,154,154,.4)}
+
+.ab{width:100%;padding:14px;border-radius:12px;font-size:14px;font-weight:900;color:#fff;margin-top:6px;transition:all .1s}
+.ab.ok{background:linear-gradient(135deg,#c62828,#b71c1c);box-shadow:0 4px 16px rgba(198,40,40,.3)}
+.ab.no{background:rgba(255,255,255,.03);color:rgba(255,255,255,.2)}
+.ab:active{transform:scale(.98)}
+
+.rec-t{font-size:10px;color:rgba(255,255,255,.25);padding:8px 14px 4px;font-weight:600}
+
+.tbl{width:100%;border-collapse:collapse;font-size:11px}
+.tbl th{background:rgba(255,82,82,.08);color:rgba(255,82,82,.8);padding:6px 8px;font-weight:700;text-align:center;position:sticky;top:0;z-index:2;backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,82,82,.1)}
+.tbl td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
+.tbl .gm{text-align:center;font-family:monospace;font-weight:700;color:rgba(255,255,255,.45);white-space:nowrap}
+.tbl .ev{text-align:center;font-weight:700}
+.tbl .nt{color:rgba(255,255,255,.35);font-size:10px}
+.tbl .del-c{text-align:center;width:28px}
+.td-d{width:22px;height:22px;border-radius:6px;background:rgba(255,100,100,.06);border:1px solid rgba(255,100,100,.15);color:#ff8a80;font-size:11px;display:flex;align-items:center;justify-content:center}
+.c-cz{color:#64b5f6}.c-kaku{color:#ef5350}.c-kess{color:#ffa726}
+.c-at{color:#ce93d8}.c-sat{color:#ea80fc}.c-atend{color:rgba(255,255,255,.4)}
+.c-hara{color:#ffd54f}.c-bar{color:#81c784}
+.tl-mt{text-align:center;color:rgba(255,255,255,.15);padding:30px;font-size:13px}
+
+.cnt{padding:8px 14px}
+.cs{margin-bottom:10px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);overflow:hidden}
+.cs-h{padding:10px 12px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
+.cs-h .t{font-size:13px;font-weight:700;color:rgba(255,82,82,.85)}
+.cs-h .ar{font-size:10px;color:rgba(255,255,255,.2)}
+.cs-b{padding:6px 10px 10px}
+.ci{padding:6px 2px;border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between;gap:6px}
+.ci-l{flex:1;min-width:0}.ci-n{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
+.ci-h{font-size:9px;color:#FFA726;background:rgba(255,167,38,.1);border-radius:4px;padding:1px 6px;display:inline-block;margin-top:2px;font-weight:700}
+.ci-s{font-size:9px;color:rgba(255,255,255,.25);margin-top:1px}
+.cw{display:flex;align-items:center;gap:4px}
+.cm,.cp2{width:38px;height:38px;border-radius:10px;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:transform .08s}
+.cm{background:rgba(255,100,100,.08);border:1px solid rgba(255,100,100,.15);color:#ff8a80}
+.cp2{background:rgba(100,255,100,.06);border:1px solid rgba(100,255,100,.12);color:#a5d6a7}
+.cm:active,.cp2:active{transform:scale(.85)}
+.vl{min-width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#e0f0fa;font-family:monospace;padding:0 4px}
+
+.cc{margin-top:6px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);font-size:11px}
+.cc-l{color:#ef9a9a;margin-top:2px}
+.cc-sub{color:rgba(255,255,255,.25);margin-top:2px;font-size:10px}
+
+.exp{padding:14px}
+.exp-h{font-size:12px;color:rgba(255,82,82,.7);font-weight:700;margin-bottom:6px}
+.exp-ta{width:100%;min-height:300px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;color:#ef9a9a;font-size:11px;font-family:monospace;white-space:pre-wrap;resize:none;outline:none;-webkit-user-select:all;user-select:all}
+</style>
+</head>
+<body>
+<div id="W"><div id="hdr"></div><div class="qs" id="qs"></div><div id="ct"></div><div id="tabs"></div></div>
+<script>
+/* 5段階設定: 1,2,4,5,6（設定3非搭載） */
+var SETS=[1,2,4,5,6];
+var SC={1:"#78909C",2:"#42A5F5",4:"#FFA726",5:"#EF5350",6:"#AB47BC"};
+var REF={hit:{1:476,2:473,4:464,5:459,6:456}};
+var MKWL={1:97.7,2:99.3,4:104.7,5:110.8,6:114.9};
+
+var EVS=[
+{id:"cz",l:"ドルシア攻防戦",c:"c-cz",cat:"cz"},
+{id:"kaku",l:"革命ボーナス",c:"c-kaku",cat:"bn"},
+{id:"kess",l:"決戦ボーナス",c:"c-kess",cat:"bn"},
+{id:"at",l:"革命RUSH",c:"c-at",cat:"at"},
+{id:"sat",l:"超革命RUSH",c:"c-sat",cat:"at"},
+{id:"atend",l:"AT終了",c:"c-atend",cat:"atend"},
+{id:"hara",l:"ハラキリドライブ",c:"c-hara",cat:"hara"},
+{id:"bar",l:"BAR揃い",c:"c-bar",cat:"bar"},
+{id:"other",l:"その他",c:"c-atend",cat:"other"}
+];
+var EVBTNS=[
+{id:"cz",l:"ドルシア攻防戦",c:"e-cz"},{id:"kaku",l:"革命BN",c:"e-kaku"},
+{id:"kess",l:"決戦BN",c:"e-kess"},{id:"at",l:"革命RUSH",c:"e-at"},
+{id:"sat",l:"超革命RUSH",c:"e-sat"},{id:"atend",l:"AT終了",c:"e-atend"},
+{id:"hara",l:"ハラキリDR",c:"e-hara"},{id:"bar",l:"BAR揃い",c:"e-bar"},
+{id:"other",l:"その他",c:"e-other"}
+];
+
+var CZ_RES=[{id:"s",l:"成功"},{id:"f",l:"失敗"}];
+var BN_RES=[{id:"at",l:"AT突入"},{id:"f",l:"スルー"}];
+var BAR_RES=[{id:"hit",l:"揃い"},{id:"miss",l:"ハズレ"}];
+var BAR_RESULT=[{id:"direct",l:"AT直撃"},{id:"rd",l:"ルーンドライブ"},{id:"none",l:"恩恵なし"}];
+/* 終了画面 CZ/BN用 */
+var END_SCR=[{id:"def",l:"デフォルト"},{id:"wh",l:"白枠"},{id:"bl",l:"青枠"},{id:"red",l:"赤枠"},{id:"pur",l:"紫枠"},{id:"sil",l:"銀枠"},{id:"gold",l:"金枠"}];
+/* AT終了画面 */
+var AT_END_SCR=[{id:"def",l:"デフォルト"},{id:"disp",l:"ディスプレイあり"}];
+
+var CNTS=[
+{id:"hd",t:"⚔️ ハラキリドライブ",items:[
+{k:"haraOK",l:"ハラキリドライブ発生"},{k:"haraNG",l:"ハラキリチャレンジ失敗（ドライブなし）",s:"発生率: 設1≒5% 設6≒17%"}]},
+{id:"bardirect",t:"🎰 BAR揃いAT直撃",items:[
+{k:"barHit",l:"BAR揃い回数"},{k:"barDirect",l:"↑ うちAT直撃",s:"設1≒3% 設6≒7%"}]},
+{id:"tbl",t:"📊 特殊テーブル",items:[
+{k:"tblLow",l:"規定pt 400pt超"},{k:"tblHigh",l:"規定pt 400pt以下（特殊テーブル疑い）",s:"設1≒1% 設6≒12%"}]},
+{id:"scr",t:"🖼️ CZ・BN終了画面",items:[
+{k:"scrDef",l:"デフォルト"},{k:"scrWh",l:"白枠（コックピット）"},
+{k:"scrBl",l:"青枠（サキ）"},{k:"scrRed",l:"赤枠",s:"高設定示唆（設1でも出現あり）"},
+{k:"scrPur",l:"紫枠（ショーコ＆サキ）",h:"設2↑"},{k:"scrSil",l:"銀枠（ピノ＆プルー）",h:"設4↑"},
+{k:"scrGold",l:"金枠（全員集合）",h:"設6"}]},
+{id:"atscr",t:"🎬 AT終了画面",items:[
+{k:"atDef",l:"デフォルト"},{k:"atDisp",l:"ディスプレイあり",h:"設6"}]},
+{id:"round",t:"🎮 ラウンド開始画面（10セット毎）",items:[
+{k:"rdDef",l:"デフォルト"},{k:"rdRed",l:"赤背景"},{k:"rdSaki",l:"200年後のサキ",h:"設4↑"},
+{k:"rdLiese",l:"リーゼロッテ",h:"設6"}]},
+{id:"sub",t:"📡 サブモニター（バッフェ）",items:[
+{k:"bufNone",l:"無人タイプ",s:"奇数設定示唆"},{k:"bufHuman",l:"有人タイプ",s:"偶数設定示唆"}]},
+{id:"magi",t:"✨ マギウスマーク",items:[
+{k:"magi4",l:"4個",h:"設4↑＋天国"},{k:"magi5",l:"5個",h:"設5↑＋天国"},{k:"magi6",l:"6個",h:"設6＋天国"}]},
+{id:"conf",t:"🏆 設定確定・示唆",items:[
+{k:"o456",l:"456枚OVER",h:"設4↑"},{k:"o555",l:"555枚OVER",h:"設5↑"},{k:"o666",l:"666枚OVER",h:"設6"},
+{k:"g22",l:"開始+22G",h:"設2↑"},{k:"g44",l:"開始+44G",h:"設4↑"},{k:"g66",l:"開始+66G",h:"設6"},
+{k:"yume4",l:"夢夢ちゃん+100GハラキリDR",h:"設4↑"}]}
+];
+
+var ALL_CC_KEYS=[];
+CNTS.forEach(function(s){s.items.forEach(function(i){ALL_CC_KEYS.push(i.k)})});
+
+var LOG=[],CC={},COL={},TAB="rec",inAT=false;
+var curEv=null,curG="",curRes=null,curScr=null,curNote="",curMai="";
+var rstP=false,rstT=null,SK="vvv2";
+
+function initC(){ALL_CC_KEYS.forEach(function(k){CC[k]=0});CNTS.forEach(function(s){COL[s.id]=false})}
+function load(){initC();try{var d=JSON.parse(localStorage.getItem(SK+"c"));if(d)for(var k in d)if(k in CC)CC[k]=d[k]}catch(e){}
+try{LOG=JSON.parse(localStorage.getItem(SK+"l"))||[]}catch(e){LOG=[]}
+inAT=false;for(var i=LOG.length-1;i>=0;i-=1){if(LOG[i].ev==="at"||LOG[i].ev==="sat"){inAT=true;break}if(LOG[i].ev==="atend"){break}}}
+function save(){try{localStorage.setItem(SK+"c",JSON.stringify(CC));localStorage.setItem(SK+"l",JSON.stringify(LOG))}catch(e){}}
+
+function est(v){if(!v||v===Infinity)return null;var c=1,m=Infinity;for(var i=0;i<SETS.length;i++){var s=SETS[i],d=Math.abs(v-REF.hit[s]);if(d<m){m=d;c=s}}return c}
+function rate(n,d){return d?(n/d*100).toFixed(1):"0"}
+function gev(id){for(var i=0;i<EVS.length;i++)if(EVS[i].id===id)return EVS[i];return null}
+
+function totalG(){
+var total=0,maxInInterval=0;
+for(var i=0;i<LOG.length;i++){
+var e=LOG[i],g=parseInt(e.g)||0;
+if(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend"){
+if(e.ev==="atend"){total+=maxInInterval;maxInInterval=0}
+continue}
+if(g>maxInInterval)maxInInterval=g}
+total+=maxInInterval;
+return total}
+
+function buildNote(e){
+var b=[];
+if(e.res==="s")b.push("成功");if(e.res==="f")b.push("失敗");
+if(e.res==="at")b.push("AT突入");if(e.res==="hit")b.push("揃い");if(e.res==="miss")b.push("ハズレ");
+if(e.res==="direct")b.push("AT直撃");if(e.res==="rd")b.push("ルーンドライブ");if(e.res==="none")b.push("恩恵なし");
+if(e.scr){var sl={"def":"デフォルト","wh":"白枠","bl":"青枠","red":"赤枠","pur":"紫枠","sil":"銀枠","gold":"金枠","disp":"ディスプレイあり"};b.push("画面："+(sl[e.scr]||e.scr))}
+if(e.mai)b.push(e.mai+"枚");
+if(e.note)b.push(e.note);
+return b.join("　")}
+
+function stats(){
+var s={bn:0,kakuN:0,kessN:0,atN:0,satN:0,czA:0,czS:0,haraN:0,barN:0};
+for(var i=0;i<LOG.length;i++){var e=LOG[i];
+if(e.ev==="cz"){s.czA+=1;if(e.res==="s")s.czS+=1}
+if(e.ev==="kaku"){s.bn+=1;s.kakuN+=1}
+if(e.ev==="kess"){s.bn+=1;s.kessN+=1}
+if(e.ev==="at")s.atN+=1;if(e.ev==="sat")s.satN+=1;
+if(e.ev==="hara")s.haraN+=1;if(e.ev==="bar")s.barN+=1}
+/* 初当たり合算 = 革命BN + 決戦BN + AT直撃 + 超AT直撃 */
+s.hitAll=s.kakuN+s.kessN+s.atN+s.satN;
+return s}
+
+function cMin(){var m=0;
+if(CC.scrGold||CC.o666||CC.g66||CC.atDisp||CC.magi6||CC.rdLiese)m=6;
+else if(CC.o555||CC.magi5)m=Math.max(m,5);
+else if(CC.scrSil||CC.o456||CC.g44||CC.rdSaki||CC.yume4||CC.magi4)m=Math.max(m,4);
+else if(CC.scrPur||CC.g22)m=Math.max(m,2);
+return m}
+
+function render(){rHdr();rQS();rTabs();
+if(TAB==="rec")rRec();else if(TAB==="cnt")rCnt();else if(TAB==="tl")rTL();else rExp()}
+
+function rHdr(){
+var h='<div class="hr"><div><div class="ht">ヴァルヴレイヴ2</div><div class="hs">'+(inAT?'【AT中】':'通常時')+' / '+LOG.length+'件</div></div>';
+h+='<button type="button" class="hb'+(rstP?' p':'')+'" id="bR">'+(rstP?'確定？':'リセット')+'</button></div>';
+var cm=cMin();if(cm>0)h+='<div class="cfm" style="background:'+SC[cm]+'22;border:1px solid '+SC[cm]+';color:'+SC[cm]+'">🎯 設定'+cm+'以上確定</div>';
+document.getElementById("hdr").innerHTML=h;
+var b=document.getElementById("bR");if(b){b.addEventListener("click",function(e){e.preventDefault();doRst()});b.addEventListener("touchend",function(e){e.preventDefault();doRst()})}}
+
+function rQS(){
+var s=stats(),tG=totalG(),h="";
+h+='<div class="qc"><span class="ql">総G</span> <span class="qv">'+tG+'</span></div>';
+if(tG>0&&s.hitAll>0){var v=tG/s.hitAll,e=est(v);h+='<div class="qc"><span class="ql">初当</span> <span class="qv">1/'+v.toFixed(0)+'</span>'+(e?' <span class="qe" style="color:'+SC[e]+'">設'+e+'</span>':'')+'</div>'}
+if(s.czA>0)h+='<div class="qc"><span class="ql">CZ</span> <span class="qv">'+s.czS+'/'+s.czA+'</span></div>';
+if(CC.haraOK+CC.haraNG>0){var hr=rate(CC.haraOK,CC.haraOK+CC.haraNG);h+='<div class="qc"><span class="ql">ハラキリDR率</span> <span class="qv">'+hr+'%</span></div>'}
+document.getElementById("qs").innerHTML=h}
+
+function rTabs(){
+var ts=[{id:"rec",ic:"✏️",l:"記録"},{id:"cnt",ic:"🔢",l:"カウンター"},{id:"tl",ic:"📋",l:"履歴"},{id:"exp",ic:"📤",l:"出力"}];
+var h="";for(var i=0;i<ts.length;i++)h+='<div class="tb'+(TAB===ts[i].id?' a':'')+'" data-tab="'+ts[i].id+'"><span class="tb-ic">'+ts[i].ic+'</span>'+ts[i].l+'</div>';
+document.getElementById("tabs").innerHTML=h}
+
+function rRec(){
+var ct=document.getElementById("ct"),h='<div class="inp">';
+h+='<div class="ig"><label>'+(inAT?'【AT中】G数':'通常時G数')+'</label><input type="number" inputmode="numeric" id="iG" value="'+curG+'" placeholder="0">';
+h+='<span class="tot">(総G: '+totalG()+')</span></div>';
+h+='<div class="eg">';
+for(var i=0;i<EVBTNS.length;i++){var eb=EVBTNS[i];
+h+='<button type="button" class="eb '+eb.c+(curEv===eb.id?' s':'')+'" data-ev="'+eb.id+'">'+eb.l+'</button>'}
+h+='</div>';
+if(curEv){
+var ev=gev(curEv);
+if(ev&&ev.cat==="cz"){
+h+='<div class="dt"><div class="dt-t">結果</div><div class="dt-r">';
+for(var i2=0;i2<CZ_RES.length;i2++){var r=CZ_RES[i2];h+='<button type="button" class="dt-b'+(curRes===r.id?' s':'')+'" data-res="'+r.id+'">'+r.l+'</button>'}
+h+='</div></div>';
+h+='<div class="dt"><div class="dt-t">終了画面</div><div class="dt-r">';
+for(var i5=0;i5<END_SCR.length;i5++){var sc2=END_SCR[i5];h+='<button type="button" class="dt-b'+(curScr===sc2.id?' s':'')+'" data-scr="'+sc2.id+'">'+sc2.l+'</button>'}
+h+='</div></div>'}
+if(ev&&ev.cat==="bn"){
+h+='<div class="dt"><div class="dt-t">結果</div><div class="dt-r">';
+for(var i3=0;i3<BN_RES.length;i3++){var r2=BN_RES[i3];h+='<button type="button" class="dt-b'+(curRes===r2.id?' s':'')+'" data-res="'+r2.id+'">'+r2.l+'</button>'}
+h+='</div></div>';
+h+='<div class="dt"><div class="dt-t">終了画面</div><div class="dt-r">';
+for(var i6=0;i6<END_SCR.length;i6++){var sc3=END_SCR[i6];h+='<button type="button" class="dt-b'+(curScr===sc3.id?' s':'')+'" data-scr="'+sc3.id+'">'+sc3.l+'</button>'}
+h+='</div></div>'}
+if(ev&&ev.cat==="bar"){
+h+='<div class="dt"><div class="dt-t">結果</div><div class="dt-r">';
+for(var i7=0;i7<BAR_RES.length;i7++){var r3=BAR_RES[i7];h+='<button type="button" class="dt-b'+(curRes===r3.id?' s':'')+'" data-res="'+r3.id+'">'+r3.l+'</button>'}
+h+='</div></div>'}
+if(curEv==="atend"){
+h+='<div class="dt"><div class="dt-t">AT終了画面</div><div class="dt-r">';
+for(var i8=0;i8<AT_END_SCR.length;i8++){var sc4=AT_END_SCR[i8];h+='<button type="button" class="dt-b'+(curScr===sc4.id?' s':'')+'" data-scr="'+sc4.id+'">'+sc4.l+'</button>'}
+h+='</div></div>';
+h+='<div class="dt"><div class="dt-t">獲得枚数</div><input type="number" inputmode="numeric" class="dt-f" id="iMai" value="'+curMai+'" placeholder="枚数"></div>'}
+h+='<div class="dt"><input type="text" class="dt-f" id="iN" placeholder="メモ（任意）" value="'+curNote+'"></div>'}
+var ok=!!curEv;
+h+='<button type="button" class="ab '+(ok?'ok':'no')+'" data-a="add">'+(ok?'✓ 記録する':'↑ イベントを選択')+'</button></div>';
+if(LOG.length>0){h+='<div class="rec-t">直近</div>';h+=buildTable(Math.max(0,LOG.length-5),LOG.length,true)}
+ct.innerHTML=h}
+
+function buildTable(from,to,mini){
+var h='<table class="tbl"><thead><tr><th style="width:60px">G数</th><th>イベント</th><th>備考</th>'+(mini?'<th style="width:28px"></th>':'')+'</tr></thead><tbody>';
+for(var i=from;i<to;i++){
+var e=LOG[i],ev=gev(e.ev),g=e.g||"0";
+var gFmt;
+if(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend")gFmt='【'+g+'】';
+else gFmt=g;
+h+='<tr><td class="gm">'+gFmt+'</td>';
+h+='<td class="ev '+(ev?ev.c:'')+'">'+(ev?ev.l:e.ev)+'</td>';
+h+='<td class="nt">'+buildNote(e)+'</td>';
+if(mini)h+='<td class="del-c"><button type="button" class="td-d" data-del="'+i+'">×</button></td>';
+h+='</tr>'}
+h+='</tbody></table>';return h}
+
+function rTL(){
+var ct=document.getElementById("ct");
+if(!LOG.length){ct.innerHTML='<div class="tl-mt">まだ記録がありません</div>';return}
+ct.innerHTML=buildTable(0,LOG.length,true)}
+
+function rCnt(){
+var ct=document.getElementById("ct"),tG=totalG(),h='<div class="cnt">';
+for(var si=0;si<CNTS.length;si++){
+var sec=CNTS[si],cl=COL[sec.id];
+h+='<div class="cs"><div class="cs-h" data-tog="'+sec.id+'"><div class="t">'+sec.t+'</div><span class="ar">'+(cl?'▶':'▼')+'</span></div>';
+if(!cl){h+='<div class="cs-b">';
+for(var ii=0;ii<sec.items.length;ii++){var it=sec.items[ii];
+h+='<div class="ci"><div class="ci-l"><div class="ci-n">';
+if(it.dot)h+='<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+it.dot+';margin-right:3px"></span>';
+h+=it.l+'</div>';if(it.h)h+='<div class="ci-h">'+it.h+'</div>';if(it.s)h+='<div class="ci-s">'+it.s+'</div>';
+h+='</div><div class="cw"><button type="button" class="cm" data-cd="'+it.k+'">−</button><div class="vl">'+CC[it.k]+'</div><button type="button" class="cp2" data-ci="'+it.k+'">＋</button></div></div>'}
+/* Computed */
+if(sec.id==="hd"&&(CC.haraOK+CC.haraNG)>0){
+h+='<div class="cc"><div class="cc-l">ハラキリDR発生率: '+CC.haraOK+'/'+(CC.haraOK+CC.haraNG)+' ('+rate(CC.haraOK,CC.haraOK+CC.haraNG)+'%)</div><div class="cc-sub">参考: 設1≒5% 設6≒17%</div></div>'}
+if(sec.id==="bardirect"&&CC.barHit>0){
+h+='<div class="cc"><div class="cc-l">BAR揃いAT直撃率: '+CC.barDirect+'/'+CC.barHit+' ('+rate(CC.barDirect,CC.barHit)+'%)</div><div class="cc-sub">参考: 設1≒3% 設6≒7%</div></div>'}
+if(sec.id==="tbl"&&(CC.tblLow+CC.tblHigh)>0){
+h+='<div class="cc"><div class="cc-l">特殊テーブル率: '+CC.tblHigh+'/'+(CC.tblLow+CC.tblHigh)+' ('+rate(CC.tblHigh,CC.tblLow+CC.tblHigh)+'%)</div><div class="cc-sub">参考: 設1≒1% 設6≒12%</div></div>'}
+h+='</div>'}h+='</div>'}h+='</div>';ct.innerHTML=h}
+
+function rExp(){
+var ct=document.getElementById("ct"),s=stats(),tG=totalG();
+var t="━━ ヴァルヴレイヴ2 ━━\n"+new Date().toLocaleString("ja-JP")+"\n\n";
+t+="【タイムライン】\n";
+for(var i=0;i<LOG.length;i++){var e=LOG[i],ev=gev(e.ev),g=e.g||"0";
+var gF=e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend"?"【"+g+"】":g;
+t+=gF+"　"+(ev?ev.l:e.ev)+"　"+buildNote(e)+"\n"}
+t+="\n【集計】\n総G: "+tG+"\n";
+if(tG>0&&s.hitAll>0)t+="初当たり合算: 1/"+(tG/s.hitAll).toFixed(0)+"\n";
+t+="革命BN:"+s.kakuN+" 決戦BN:"+s.kessN+" AT:"+s.atN+" 超AT:"+s.satN+"\n";
+if(s.czA)t+="CZ: "+s.czS+"/"+s.czA+" ("+rate(s.czS,s.czA)+"%)\n";
+if(CC.haraOK+CC.haraNG>0)t+="ハラキリDR: "+CC.haraOK+"/"+(CC.haraOK+CC.haraNG)+" ("+rate(CC.haraOK,CC.haraOK+CC.haraNG)+"%)\n";
+var cm=cMin();if(cm>0)t+="設定"+cm+"以上確定\n";
+var h='<div class="exp"><div class="exp-h">長押し→すべてを選択→コピー</div>';
+h+='<textarea class="exp-ta" id="eTA" readonly>'+t.replace(/</g,"&lt;")+'</textarea></div>';
+ct.innerHTML=h;var ta=document.getElementById("eTA");if(ta){ta.focus();ta.setSelectionRange(0,ta.value.length)}}
+
+function addEntry(){
+if(!curEv)return;
+var e={ev:curEv,g:curG||"0"};
+if(curRes)e.res=curRes;if(curScr)e.scr=curScr;if(curNote)e.note=curNote;if(curMai)e.mai=curMai;
+if(curEv==="at"||curEv==="sat")inAT=true;
+if(curEv==="atend")inAT=false;
+LOG.push(e);curEv=null;curG="";curRes=null;curScr=null;curNote="";curMai="";save();render()}
+
+function doRst(){
+if(!rstP){rstP=true;if(rstT)clearTimeout(rstT);rstT=setTimeout(function(){rstP=false;render()},3000);render();return}
+LOG=[];initC();inAT=false;save();rstP=false;render()}
+
+document.getElementById("W").addEventListener("click",function(ev){
+var el=ev.target;
+for(var i=0;i<6&&el&&el!==this;i++){if(el.dataset){
+if(el.dataset.tab){TAB=el.dataset.tab;render();return}
+if(el.dataset.ev){curEv=(curEv===el.dataset.ev?null:el.dataset.ev);curRes=null;curScr=null;curMai="";render();return}
+if(el.dataset.res){curRes=(curRes===el.dataset.res?null:el.dataset.res);render();return}
+if(el.dataset.scr){curScr=(curScr===el.dataset.scr?null:el.dataset.scr);render();return}
+if(el.dataset.a==="add"){addEntry();return}
+if(el.dataset.del!==undefined){LOG.splice(parseInt(el.dataset.del),1);save();load();render();return}
+if(el.dataset.tog){COL[el.dataset.tog]=!COL[el.dataset.tog];render();return}
+if(el.dataset.ci){CC[el.dataset.ci]+=1;save();render();return}
+if(el.dataset.cd){if(CC[el.dataset.cd]>0)CC[el.dataset.cd]-=1;save();render();return}
+}el=el.parentElement}});
+document.getElementById("W").addEventListener("input",function(ev){
+if(ev.target.id==="iG")curG=ev.target.value;
+if(ev.target.id==="iN")curNote=ev.target.value;
+if(ev.target.id==="iMai")curMai=ev.target.value});
+
+load();render();
+</script>
+</body>
+</html>
