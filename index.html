@@ -6,380 +6,595 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ヴヴヴ2">
-<title>ヴァルヴレイヴ2</title>
+<meta name="theme-color" content="#04060e">
+<title>ヴァルヴレイヴ2 設定推測</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overscroll-behavior:none}
 body{background:#04060e;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Kaku Gothic ProN',sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}
-button{touch-action:manipulation;font-family:inherit;cursor:pointer;border:none;outline:none}
+button{touch-action:manipulation;font-family:inherit;cursor:pointer;border:none;outline:none;color:inherit}
+input{font-family:inherit}
 input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}
 input[type=number]{-moz-appearance:textfield}
+#W{max-width:540px;margin:0 auto;display:flex;flex-direction:column;height:100vh;height:100dvh}
+#top{flex-shrink:0;background:rgba(8,6,20,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,60,60,.18);padding-top:env(safe-area-inset-top,0px)}
+#ct{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#tabs{display:flex;background:rgba(10,10,18,.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
+.tb{flex:1;padding:8px 0 6px;text-align:center;font-size:9px;font-weight:600;color:rgba(255,255,255,.32)}
+.tb.a{color:#ff5252}.tb-ic{font-size:19px;display:block;margin-bottom:2px}
 
-#W{max-width:520px;margin:0 auto;display:flex;flex-direction:column;height:100vh;height:100dvh;padding-top:env(safe-area-inset-top,0px)}
+.hr{display:flex;align-items:center;justify-content:space-between;padding:9px 14px 6px}
+.ht{font-size:15px;font-weight:900;background:linear-gradient(135deg,#ff3d3d,#ff8a3d);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hs{font-size:10px;color:rgba(255,255,255,.38);margin-top:1px}
+.hb{padding:5px 11px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,100,100,.08);border:1px solid rgba(255,100,100,.2);color:#ff8a80}
+.hb.p{background:rgba(255,50,50,.18);border-color:rgba(255,50,50,.5);color:#ff5252}
 
-#hdr{background:rgba(10,6,24,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);padding:12px 14px 8px;border-bottom:1px solid rgba(200,60,60,.2);flex-shrink:0}
-.hr{display:flex;align-items:center;justify-content:space-between}
-.ht{font-size:16px;font-weight:900;background:linear-gradient(135deg,#ff3d3d,#ff8a3d);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.5px}
-.hs{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px}
-.hb{padding:5px 12px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,100,100,.08);border:1px solid rgba(255,100,100,.2);color:#ff8a80;backdrop-filter:blur(10px)}
-.hb.p{background:rgba(255,50,50,.15);border-color:rgba(255,50,50,.4);color:#ff5252}
-.cfm{margin-top:6px;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:700;backdrop-filter:blur(10px)}
+.est{padding:2px 14px 10px}
+.est-top{display:flex;align-items:baseline;gap:8px;margin-bottom:7px}
+.est-lb{font-size:10px;color:rgba(255,255,255,.35);font-weight:600}
+.est-main{font-size:20px;font-weight:900}
+.est-conf{font-size:11px;color:rgba(255,255,255,.4);margin-left:auto}
+.bars{display:flex;flex-direction:column;gap:4px}
+.bar-row{display:flex;align-items:center;gap:7px}
+.bar-s{width:30px;font-size:12px;font-weight:800;text-align:center;border-radius:5px;padding:1px 0}
+.bar-track{flex:1;height:15px;background:rgba(255,255,255,.05);border-radius:7px;overflow:hidden}
+.bar-fill{height:100%;border-radius:7px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+.bar-pct{width:42px;text-align:right;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.rng{margin-top:8px;padding:6px 10px;border-radius:9px;font-size:11px;font-weight:700;text-align:center}
+.est-note{font-size:9px;color:rgba(255,255,255,.3);margin-top:6px;line-height:1.45}
+.est-note b{color:rgba(255,255,255,.5)}
+.qs{display:flex;gap:5px;flex-wrap:wrap;padding:7px 14px;background:rgba(6,6,16,.6);border-top:1px solid rgba(255,255,255,.04);font-size:10px}
+.qc{background:rgba(255,255,255,.04);border-radius:7px;padding:3px 8px;border:1px solid rgba(255,255,255,.05)}
+.ql{color:rgba(255,255,255,.32);margin-right:3px}.qv{color:#ef9a9a;font-weight:700}
 
-.qs{display:flex;gap:5px;flex-wrap:wrap;padding:6px 14px;background:rgba(6,6,16,.95);border-bottom:1px solid rgba(255,255,255,.04);font-size:10px;flex-shrink:0}
-.qc{background:rgba(255,255,255,.04);border-radius:8px;padding:4px 8px;border:1px solid rgba(255,255,255,.06)}
-.ql{color:rgba(255,255,255,.3);margin-right:3px}.qv{color:#ef9a9a;font-weight:600}.qe{font-weight:700}
-
-#tabs{display:flex;background:rgba(10,10,18,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid rgba(255,255,255,.06);flex-shrink:0;padding-bottom:env(safe-area-inset-bottom)}
-.tb{flex:1;padding:8px 0 6px;text-align:center;font-size:9px;font-weight:600;color:rgba(255,255,255,.3);transition:color .15s}
-.tb.a{color:#ff5252}
-.tb-ic{font-size:18px;display:block;margin-bottom:2px}
-
-#ct{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;background:#04060e}
-
-.inp{padding:12px 14px}
-.ig{display:flex;gap:8px;margin-bottom:10px;align-items:center;flex-wrap:wrap}
-.ig label{font-size:11px;color:rgba(255,255,255,.4);white-space:nowrap;font-weight:600}
-.ig input{width:72px;height:36px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;color:#ef9a9a;font-size:15px;font-weight:700;text-align:center;outline:none;font-family:monospace;transition:border-color .15s}
-.ig input:focus{border-color:rgba(239,154,154,.5);background:rgba(255,255,255,.08)}
-.tot{font-size:10px;color:rgba(255,255,255,.25)}
-
-.eg{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-bottom:10px}
-.eb{padding:10px 2px;border-radius:10px;font-size:11px;font-weight:700;text-align:center;line-height:1.2;transition:all .1s;border:1px solid transparent}
-.eb:active{transform:scale(.95)}
-.eb.s{border-color:#ff5252;box-shadow:0 0 12px rgba(255,82,82,.2)}
-.e-cz{background:rgba(100,181,246,.12);color:#64b5f6;border-color:rgba(100,181,246,.15)}
-.e-kaku{background:rgba(239,83,80,.12);color:#ef5350;border-color:rgba(239,83,80,.15)}
-.e-kess{background:rgba(255,167,38,.12);color:#ffa726;border-color:rgba(255,167,38,.15)}
-.e-at{background:rgba(206,147,216,.12);color:#ce93d8;border-color:rgba(206,147,216,.15)}
-.e-sat{background:rgba(234,128,252,.12);color:#ea80fc;border-color:rgba(234,128,252,.15)}
-.e-atend{background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.06)}
-.e-hara{background:rgba(255,213,79,.12);color:#ffd54f;border-color:rgba(255,213,79,.15)}
-.e-bar{background:rgba(129,199,132,.12);color:#81c784;border-color:rgba(129,199,132,.15)}
-.e-other{background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);border-color:rgba(255,255,255,.05)}
-
-.dt{margin-bottom:8px}
-.dt-t{font-size:10px;color:rgba(255,255,255,.35);margin-bottom:4px;font-weight:600}
-.dt-r{display:flex;gap:4px;flex-wrap:wrap}
-.dt-b{padding:6px 10px;border-radius:8px;font-size:11px;font-weight:700;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.5);transition:all .1s}
-.dt-b.s{border-color:rgba(255,82,82,.5);color:#ff5252;background:rgba(255,82,82,.08)}
-.dt-b:active{transform:scale(.96)}
-.dt-f{width:100%;height:32px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;color:#ccc;font-size:12px;padding:0 10px;outline:none;font-family:inherit;transition:border-color .15s}
-.dt-f:focus{border-color:rgba(239,154,154,.4)}
-
-.ab{width:100%;padding:14px;border-radius:12px;font-size:14px;font-weight:900;color:#fff;margin-top:6px;transition:all .1s}
-.ab.ok{background:linear-gradient(135deg,#c62828,#b71c1c);box-shadow:0 4px 16px rgba(198,40,40,.3)}
-.ab.no{background:rgba(255,255,255,.03);color:rgba(255,255,255,.2)}
+.rec{padding:11px 12px 22px}
+.rowg{display:flex;gap:8px;align-items:center;margin-bottom:9px}
+.rowg label{font-size:11px;color:rgba(255,255,255,.42);font-weight:600;white-space:nowrap}
+.gin{width:78px;height:40px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:11px;color:#ef9a9a;font-size:17px;font-weight:800;text-align:center;outline:none;font-family:ui-monospace,monospace}
+.gin:focus{border-color:rgba(239,154,154,.55);background:rgba(255,255,255,.08)}
+.gtot{font-size:10px;color:rgba(255,255,255,.28)}
+.grid{display:grid;gap:6px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g6{grid-template-columns:repeat(6,1fr)}
+.eb{padding:12px 3px;border-radius:11px;font-size:12px;font-weight:800;text-align:center;line-height:1.2;border:1px solid transparent;transition:transform .08s}
+.eb:active{transform:scale(.94)}.eb.s{box-shadow:0 0 0 2px currentColor inset;filter:brightness(1.28)}
+.eb small{display:block;font-size:8px;opacity:.6;font-weight:600;margin-top:1px}
+.dt{margin:9px 0}
+.dt-t{font-size:10px;color:rgba(255,255,255,.36);margin-bottom:4px;font-weight:600}
+.dt-r{display:flex;gap:5px;flex-wrap:wrap}
+.dt-b{padding:9px 12px;border-radius:9px;font-size:12px;font-weight:700;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.6)}
+.dt-b.s{border-color:#ff5252;color:#ff5252;background:rgba(255,82,82,.1)}
+.dt-b:active{transform:scale(.95)}
+.dt-f{width:100%;height:38px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:9px;color:#ccc;font-size:13px;padding:0 12px;outline:none}
+.flow{margin:9px 0;padding:9px 10px;border-radius:11px;background:rgba(100,181,246,.05);border:1px solid rgba(100,181,246,.14)}
+.flow-t{font-size:10px;color:#64b5f6;font-weight:700;margin-bottom:5px}
+.ptbtn{padding:11px 2px;border-radius:9px;font-size:13px;font-weight:800;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:rgba(255,255,255,.62)}
+.ptbtn.s{border-color:#64b5f6;color:#64b5f6;background:rgba(100,181,246,.12)}
+.ptbtn:active{transform:scale(.94)}
+.ab{position:sticky;bottom:8px;width:100%;padding:15px;border-radius:13px;font-size:15px;font-weight:900;color:#fff;margin-top:12px;box-shadow:0 6px 24px rgba(0,0,0,.5)}
+.ab.ok{background:linear-gradient(135deg,#e53935,#b71c1c)}
+.ab.no{background:rgba(255,255,255,.05);color:rgba(255,255,255,.28);box-shadow:none}
 .ab:active{transform:scale(.98)}
 
-.rec-t{font-size:10px;color:rgba(255,255,255,.25);padding:8px 14px 4px;font-weight:600}
-
+.rec-t{font-size:10px;color:rgba(255,255,255,.28);padding:14px 4px 4px;font-weight:700}
 .tbl{width:100%;border-collapse:collapse;font-size:11px}
-.tbl th{background:rgba(255,82,82,.08);color:rgba(255,82,82,.8);padding:6px 8px;font-weight:700;text-align:center;position:sticky;top:0;z-index:2;backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,82,82,.1)}
+.tbl th{background:rgba(255,82,82,.08);color:rgba(255,82,82,.8);padding:6px 8px;font-weight:700;text-align:center;position:sticky;top:0;z-index:2;border-bottom:1px solid rgba(255,82,82,.12)}
 .tbl td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:top}
-.tbl .gm{text-align:center;font-family:monospace;font-weight:700;color:rgba(255,255,255,.45);white-space:nowrap}
-.tbl .ev{text-align:center;font-weight:700}
-.tbl .nt{color:rgba(255,255,255,.35);font-size:10px}
-.tbl .del-c{text-align:center;width:28px}
-.td-d{width:22px;height:22px;border-radius:6px;background:rgba(255,100,100,.06);border:1px solid rgba(255,100,100,.15);color:#ff8a80;font-size:11px;display:flex;align-items:center;justify-content:center}
-.c-cz{color:#64b5f6}.c-kaku{color:#ef5350}.c-kess{color:#ffa726}
-.c-at{color:#ce93d8}.c-sat{color:#ea80fc}.c-atend{color:rgba(255,255,255,.4)}
-.c-hara{color:#ffd54f}.c-bar{color:#81c784}
-.tl-mt{text-align:center;color:rgba(255,255,255,.15);padding:30px;font-size:13px}
+.tbl .gm{text-align:center;font-family:ui-monospace,monospace;font-weight:700;color:rgba(255,255,255,.5);white-space:nowrap}
+.tbl .ev{font-weight:700}.tbl .nt{color:rgba(255,255,255,.4);font-size:10px}
+.tbl .dc{text-align:center;width:26px}
+.td-d{width:22px;height:22px;border-radius:6px;background:rgba(255,100,100,.06);border:1px solid rgba(255,100,100,.15);color:#ff8a80;font-size:12px}
+.mt{text-align:center;color:rgba(255,255,255,.18);padding:34px;font-size:13px}
 
-.cnt{padding:8px 14px}
-.cs{margin-bottom:10px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);overflow:hidden}
-.cs-h{padding:10px 12px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
-.cs-h .t{font-size:13px;font-weight:700;color:rgba(255,82,82,.85)}
-.cs-h .ar{font-size:10px;color:rgba(255,255,255,.2)}
-.cs-b{padding:6px 10px 10px}
+.cnt{padding:8px 12px 22px}
+.cs{margin-bottom:9px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);overflow:hidden}
+.cs-h{padding:10px 12px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between;user-select:none}
+.cs-h .t{font-size:13px;font-weight:800;color:rgba(255,82,82,.85)}
+.cs-h .ar{font-size:10px;color:rgba(255,255,255,.25)}
+.cs-b{padding:5px 10px 9px}
 .ci{padding:6px 2px;border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between;gap:6px}
-.ci-l{flex:1;min-width:0}.ci-n{font-size:12px;font-weight:600;color:rgba(255,255,255,.7)}
-.ci-h{font-size:9px;color:#FFA726;background:rgba(255,167,38,.1);border-radius:4px;padding:1px 6px;display:inline-block;margin-top:2px;font-weight:700}
-.ci-s{font-size:9px;color:rgba(255,255,255,.25);margin-top:1px}
-.cw{display:flex;align-items:center;gap:4px}
-.cm,.cp2{width:38px;height:38px;border-radius:10px;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:transform .08s}
+.ci:last-child{border-bottom:none}
+.ci-l{flex:1;min-width:0}.ci-n{font-size:12px;font-weight:600;color:rgba(255,255,255,.78)}
+.ci-h{font-size:9px;color:#FFA726;background:rgba(255,167,38,.12);border-radius:4px;padding:1px 6px;display:inline-block;margin-top:2px;font-weight:800}
+.ci-h.hi{color:#AB47BC;background:rgba(171,71,188,.14)}
+.ci-s{font-size:9px;color:rgba(255,255,255,.3);margin-top:1px}
+.cw{display:flex;align-items:center;gap:5px}
+.cm,.cp{width:38px;height:38px;border-radius:10px;font-size:19px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .cm{background:rgba(255,100,100,.08);border:1px solid rgba(255,100,100,.15);color:#ff8a80}
-.cp2{background:rgba(100,255,100,.06);border:1px solid rgba(100,255,100,.12);color:#a5d6a7}
-.cm:active,.cp2:active{transform:scale(.85)}
-.vl{min-width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#e0f0fa;font-family:monospace;padding:0 4px}
+.cp{background:rgba(100,255,140,.06);border:1px solid rgba(100,255,140,.13);color:#a5d6a7}
+.cm:active,.cp:active{transform:scale(.85)}
+.vl{min-width:34px;height:38px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#e0f0fa;font-family:ui-monospace,monospace}
+.cc{margin:6px 2px 2px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);font-size:11px}
+.cc-l{color:#ef9a9a}.cc-s{color:rgba(255,255,255,.3);margin-top:2px;font-size:10px}
 
-.cc{margin-top:6px;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);font-size:11px}
-.cc-l{color:#ef9a9a;margin-top:2px}
-.cc-sub{color:rgba(255,255,255,.25);margin-top:2px;font-size:10px}
+.info{padding:10px 14px 24px}
+.isec{margin-bottom:11px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);overflow:hidden}
+.isec-h{padding:10px 12px;background:rgba(255,255,255,.03);display:flex;align-items:center;justify-content:space-between;user-select:none}
+.isec-h .t{font-size:13px;font-weight:800;color:rgba(255,82,82,.85)}
+.isec-h .ar{font-size:10px;color:rgba(255,255,255,.2)}
+.isec-b{padding:8px 12px 12px}
+.itbl{width:100%;border-collapse:collapse;font-size:11px}
+.itbl th{background:rgba(255,82,82,.06);color:rgba(255,82,82,.7);padding:5px 6px;font-weight:700;text-align:left}
+.itbl td{padding:5px 6px;border-top:1px solid rgba(255,255,255,.04);vertical-align:top;color:rgba(255,255,255,.62)}
+.itbl td.v{text-align:right;white-space:nowrap;font-family:ui-monospace,monospace;color:#80cbc4;font-weight:700}
+.ibadge{display:inline-block;font-size:10px;font-weight:800;padding:1px 7px;border-radius:5px;color:#04060e}
+.inote{font-size:10px;color:rgba(255,255,255,.3);margin-top:6px;line-height:1.5}
+.idot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px;vertical-align:middle}
 
 .exp{padding:14px}
 .exp-h{font-size:12px;color:rgba(255,82,82,.7);font-weight:700;margin-bottom:6px}
-.exp-ta{width:100%;min-height:300px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;color:#ef9a9a;font-size:11px;font-family:monospace;white-space:pre-wrap;resize:none;outline:none;-webkit-user-select:all;user-select:all}
+.exp-ta{width:100%;min-height:340px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:12px;color:#ef9a9a;font-size:11px;font-family:ui-monospace,monospace;white-space:pre-wrap;resize:none;outline:none;-webkit-user-select:all;user-select:all}
 </style>
 </head>
 <body>
-<div id="W"><div id="hdr"></div><div class="qs" id="qs"></div><div id="ct"></div><div id="tabs"></div></div>
+<div id="W">
+  <div id="top"><div id="hdr"></div><div class="est" id="est"></div><div class="qs" id="qs"></div></div>
+  <div id="ct"></div>
+  <div id="tabs"></div>
+</div>
 <script>
-/* 5段階設定: 1,2,4,5,6（設定3非搭載） */
+/* ========================================================================
+   ヴァルヴレイヴ2（SANKYO / 2025.11）設定推測メモ
+   出典: なな徹/ちょんぼりすた/一撃/DMM/altema/スロベース/パチマガ
+   設定: 1,2,4,5,6（設定3非搭載）
+   ======================================================================== */
 var SETS=[1,2,4,5,6];
 var SC={1:"#78909C",2:"#42A5F5",4:"#FFA726",5:"#EF5350",6:"#AB47BC"};
-var REF={hit:{1:476,2:473,4:464,5:459,6:456}};
-var MKWL={1:97.7,2:99.3,4:104.7,5:110.8,6:114.9};
+var WARI={1:97.7,2:99.3,4:104.7,5:110.8,6:114.9};
+var HITX={1:476,2:473,4:464,5:459,6:456};
+var SIG_BARDIRECT={1:.03,2:.04,4:.05,5:.06,6:.07};
+/* ハラキリドライブ発生率/連（設定別・単調5段階）
+   設1:1/19 設2:1/16 設4:1/8 設5:1/7 設6:1/6連。
+   基準(設1/2=15〜20連, 設4↑=6〜8連)を単調補間＋設5実戦値参照。
+   ※50G/100G/究極=ドライブは有利区間切れ後に集中（切れ前/中革命は約2%）。複数設定の公開解析値が乏しく近似値。*/
+var SIG_HARA={1:.053,2:.063,4:.125,5:.143,6:.167};
+var SIG_TOKU={1:.01,2:.02,4:.04,5:.08,6:.12};
+/* 規定pt≤400確率(近似)=特殊テーブル選択率 + 通常テーブルでの≤400率(約0.6) */
+var P400={};SETS.forEach(function(s){P400[s]=SIG_TOKU[s]+(1-SIG_TOKU[s])*0.6});
+var ENDSCR={
+ def:{1:74,2:65,4:60,5:60,6:60}, blue1:{1:8,2:5,4:5,5:10,6:5}, blue2:{1:8,2:10,4:10,5:5,6:10},
+ red1:{1:7,2:7,4:9,5:9,6:9}, red2:{1:3,2:3,4:6,5:6,6:6},
+ purple:{1:0,2:10,4:8,5:8,6:7}, silver:{1:0,2:0,4:2,5:2,6:2}, gold:{1:0,2:0,4:0,5:0,6:1}};
+var SUBMON={none:{1:55,2:45,4:45,5:55,6:45},human:{1:45,2:55,4:55,5:45,6:55}};
 
+var END_FRAMES=[
+ {k:"def",l:"白(デフォ)",c:"#cfd8dc"},{k:"blue1",l:"青①ライゾウ",c:"#64b5f6"},{k:"blue2",l:"青②サキ",c:"#4fc3f7"},
+ {k:"red1",l:"赤①",c:"#ef9a9a"},{k:"red2",l:"赤②4人",c:"#ef5350"},{k:"purple",l:"紫(2↑)",c:"#ce93d8"},
+ {k:"silver",l:"銀(4↑)",c:"#b0bec5"},{k:"gold",l:"金(6)",c:"#ffd54f"}];
+
+/* ===== イベント（記録の主役） ===== */
 var EVS=[
-{id:"cz",l:"ドルシア攻防戦",c:"c-cz",cat:"cz"},
-{id:"kaku",l:"革命ボーナス",c:"c-kaku",cat:"bn"},
-{id:"kess",l:"決戦ボーナス",c:"c-kess",cat:"bn"},
-{id:"at",l:"革命RUSH",c:"c-at",cat:"at"},
-{id:"sat",l:"超革命RUSH",c:"c-sat",cat:"at"},
-{id:"atend",l:"AT終了",c:"c-atend",cat:"atend"},
-{id:"hara",l:"ハラキリドライブ",c:"c-hara",cat:"hara"},
-{id:"bar",l:"BAR揃い",c:"c-bar",cat:"bar"},
-{id:"other",l:"その他",c:"c-atend",cat:"other"}
+ {id:"zencho",l:"前兆",s:"規定pt",c:"#64b5f6",cat:"zencho"},
+ {id:"enshutsu",l:"演出/示唆",c:"#80cbc4",cat:"enshutsu"},
+ {id:"dorusia",l:"ドルシア",s:"CZ",c:"#42a5f5",cat:"cz"},
+ {id:"kaku",l:"革命BN",c:"#ef5350",cat:"bn_k"},
+ {id:"kessen",l:"決戦BN",s:"REG",c:"#ffa726",cat:"bn"},
+ {id:"at",l:"革命RUSH",s:"AT",c:"#ce93d8",cat:"at"},
+ {id:"sat",l:"超革命RUSH",c:"#ea80fc",cat:"at"},
+ {id:"atend",l:"AT終了",c:"#90a4ae",cat:"atend"},
+ {id:"other",l:"その他",c:"#8899aa",cat:"other"}
 ];
-var EVBTNS=[
-{id:"cz",l:"ドルシア攻防戦",c:"e-cz"},{id:"kaku",l:"革命BN",c:"e-kaku"},
-{id:"kess",l:"決戦BN",c:"e-kess"},{id:"at",l:"革命RUSH",c:"e-at"},
-{id:"sat",l:"超革命RUSH",c:"e-sat"},{id:"atend",l:"AT終了",c:"e-atend"},
-{id:"hara",l:"ハラキリDR",c:"e-hara"},{id:"bar",l:"BAR揃い",c:"e-bar"},
-{id:"other",l:"その他",c:"e-other"}
+var EVMAP={};EVS.forEach(function(e){EVMAP[e.id]=e});
+/* 記録タブ 上段レイアウト（ボーナス/ATはグループ。タップで内訳表示） */
+var EV_LAYOUT=[{ev:"zencho"},{ev:"enshutsu"},{ev:"dorusia"},
+ {grp:"bonus",l:"ボーナス",c:"#ef5350",mem:["kaku","kessen"]},
+ {grp:"at",l:"AT",c:"#ce93d8",mem:["at","sat"]},
+ {ev:"atend"},{ev:"other"}];
+var EV2GRP={kaku:"bonus",kessen:"bonus",at:"at",sat:"at"};
+
+/* 演出・示唆メモ（モード/周期/前兆示唆＝メモ。設定示唆ではない）
+   種類ごとに内容と示唆を保持。記録タブで 種類→内容 を選択 */
+var ENSHUTSU=[
+ {id:"eyecatch",l:"アイキャッチ",opts:[
+   {id:"blk",l:"黒背景",s:"デフォルト"},
+   {id:"red",l:"赤背景",s:"2周期以内CZ濃厚"},
+   {id:"wht",l:"白背景",s:"通常B以上80%"},
+   {id:"red_v",l:"赤+ヴァルヴレイヴ影",s:"次回革命BN+マリエモード66%"},
+   {id:"blk_p",l:"黒+ピノ影",s:"当該/次周期CZ66%"},
+   {id:"wht_p",l:"白+ピノ影",s:"通常B80%+当該/次周期CZ80%"}]},
+ {id:"voice",l:"電脳終了ボイス",opts:[
+   {id:"def",l:"これが精一杯です",s:"デフォルト"},
+   {id:"omae",l:"お前にしては適切な判断",s:"通常B以上50%"},
+   {id:"boku",l:"僕は化物なんかじゃない",s:"通常B以上80%"},
+   {id:"nice",l:"ナーイス",s:"当該/次周期CZ66%"},
+   {id:"jibun",l:"自分で自分が分からない",s:"当該/次周期CZ濃厚"}]},
+ {id:"pino",l:"ピノ台詞(規定pt)",opts:[
+   {id:"onaka",l:"オナカスイタ",s:"デフォルト"},
+   {id:"ayashii",l:"アヤシイ？",s:"400pt以内濃厚"},
+   {id:"chikai",l:"チカイ！",s:"200pt以内(本前兆50%)"},
+   {id:"kekkon",l:"ケッコンケッコン",s:"100pt以内(本前兆80%)"}]},
+ {id:"submon",l:"サブモニター機体",opts:[
+   {id:"v3",l:"Valvrave3",s:"3周期内CZ80%&2周期内50%"},
+   {id:"v5",l:"Valvrave5",s:"5周期以内CZ濃厚"},
+   {id:"pf_hinowa",l:"PF火ノ輪",s:"通常B以上50%"},
+   {id:"pf_hiasobi",l:"PF火遊",s:"通常B以上濃厚"},
+   {id:"pf_hibito",l:"PF火人",s:"2周期以内CZ濃厚"},
+   {id:"marie",l:"搭乗者野火マリエ",s:"次回革命BN+マリエモード濃厚"}]},
+ {id:"talk",l:"会話 文字色",opts:[
+   {id:"blue",l:"青文字",s:"電脳ゾーン前兆?"},
+   {id:"red",l:"赤文字",s:"本前兆濃厚"},
+   {id:"p_marie",l:"紫:マリエ「大丈夫!」",s:"マリエモード期待大"},
+   {id:"p_haruto",l:"紫:ハルト「ヴぅ…」",s:"引き戻し50%(否定で通常B濃厚)"},
+   {id:"p_souichi",l:"紫:ソウイチ",s:"引き戻し80%(否定で天国濃厚)"}]},
 ];
+/* 前兆ステージ（前兆イベントで選択） */
+var ZEN_STAGE=[{id:"def",l:"革命の高校生",s:"デフォルト"},{id:"escape",l:"地球脱出作戦",s:"本前兆期待度UP"}];
+/* ボーナス中の示唆演出（恩恵＝メモ） */
+var BONUS_IN=[
+ {id:"none",l:"なし"},{id:"dennou",l:"電脳10連"},{id:"marie",l:"マリエ覚醒"},
+ {id:"czkakutei",l:"CZ確定"},{id:"lostmem",l:"失われた記憶"}];
+var CZ_RES=[{id:"s",l:"成功(当選)"},{id:"f",l:"失敗"}];
+var BAR_RES=[{id:"direct",l:"AT直撃"},{id:"none",l:"恩恵なし"}];
+var HARA_RES=[{id:"ok",l:"突破(ドライブ)"},{id:"ng",l:"失敗"}];
+var AT_ENDSCR=[{id:"def",l:"デフォ"},{id:"photo",l:"写真あり(6濃厚)"}];
+var ZEN_CYC=[1,2,3,4,5,6];
+var ZEN_PT=[100,200,300,400,500,600];
 
-var CZ_RES=[{id:"s",l:"成功"},{id:"f",l:"失敗"}];
-var BN_RES=[{id:"at",l:"AT突入"},{id:"f",l:"スルー"}];
-var BAR_RES=[{id:"hit",l:"揃い"},{id:"miss",l:"ハズレ"}];
-var BAR_RESULT=[{id:"direct",l:"AT直撃"},{id:"rd",l:"ルーンドライブ"},{id:"none",l:"恩恵なし"}];
-/* 終了画面 CZ/BN用 */
-var END_SCR=[{id:"def",l:"デフォルト"},{id:"wh",l:"白枠"},{id:"bl",l:"青枠"},{id:"red",l:"赤枠"},{id:"pur",l:"紫枠"},{id:"sil",l:"銀枠"},{id:"gold",l:"金枠"}];
-/* AT終了画面 */
-var AT_END_SCR=[{id:"def",l:"デフォルト"},{id:"disp",l:"ディスプレイあり"}];
-
+/* ===== 設定示唆カウンター（推測に直接寄与） ===== */
 var CNTS=[
-{id:"hd",t:"⚔️ ハラキリドライブ",items:[
-{k:"haraOK",l:"ハラキリドライブ発生"},{k:"haraNG",l:"ハラキリチャレンジ失敗（ドライブなし）",s:"発生率: 設1≒5% 設6≒17%"}]},
-{id:"bardirect",t:"🎰 BAR揃いAT直撃",items:[
-{k:"barHit",l:"BAR揃い回数"},{k:"barDirect",l:"↑ うちAT直撃",s:"設1≒3% 設6≒7%"}]},
-{id:"tbl",t:"📊 特殊テーブル",items:[
-{k:"tblLow",l:"規定pt 400pt超"},{k:"tblHigh",l:"規定pt 400pt以下（特殊テーブル疑い）",s:"設1≒1% 設6≒12%"}]},
-{id:"scr",t:"🖼️ CZ・BN終了画面",items:[
-{k:"scrDef",l:"デフォルト"},{k:"scrWh",l:"白枠（コックピット）"},
-{k:"scrBl",l:"青枠（サキ）"},{k:"scrRed",l:"赤枠",s:"高設定示唆（設1でも出現あり）"},
-{k:"scrPur",l:"紫枠（ショーコ＆サキ）",h:"設2↑"},{k:"scrSil",l:"銀枠（ピノ＆プルー）",h:"設4↑"},
-{k:"scrGold",l:"金枠（全員集合）",h:"設6"}]},
-{id:"atscr",t:"🎬 AT終了画面",items:[
-{k:"atDef",l:"デフォルト"},{k:"atDisp",l:"ディスプレイあり",h:"設6"}]},
-{id:"round",t:"🎮 ラウンド開始画面（10セット毎）",items:[
-{k:"rdDef",l:"デフォルト"},{k:"rdRed",l:"赤背景"},{k:"rdSaki",l:"200年後のサキ",h:"設4↑"},
-{k:"rdLiese",l:"リーゼロッテ",h:"設6"}]},
-{id:"sub",t:"📡 サブモニター（バッフェ）",items:[
-{k:"bufNone",l:"無人タイプ",s:"奇数設定示唆"},{k:"bufHuman",l:"有人タイプ",s:"偶数設定示唆"}]},
-{id:"magi",t:"✨ マギウスマーク",items:[
-{k:"magi4",l:"4個",h:"設4↑＋天国"},{k:"magi5",l:"5個",h:"設5↑＋天国"},{k:"magi6",l:"6個",h:"設6＋天国"}]},
-{id:"conf",t:"🏆 設定確定・示唆",items:[
-{k:"o456",l:"456枚OVER",h:"設4↑"},{k:"o555",l:"555枚OVER",h:"設5↑"},{k:"o666",l:"666枚OVER",h:"設6"},
-{k:"g22",l:"開始+22G",h:"設2↑"},{k:"g44",l:"開始+44G",h:"設4↑"},{k:"g66",l:"開始+66G",h:"設6"},
-{k:"yume4",l:"夢夢ちゃん+100GハラキリDR",h:"設4↑"}]}
+ {id:"end",t:"🖼️ CZ/ボーナス 終了画面",items:[
+   {k:"e_def",l:"白(デフォ)"},{k:"e_blue1",l:"青①ライゾウ",s:"奇数+弱"},{k:"e_blue2",l:"青②サキ",s:"偶数"},
+   {k:"e_red1",l:"赤①",s:"高設定弱"},{k:"e_red2",l:"赤②4人",s:"高設定強"},
+   {k:"e_purple",l:"紫(ショーコ&サキ)",h:"設2↑"},{k:"e_silver",l:"銀(ピノ&プルー)",h:"設4↑"},{k:"e_gold",l:"金(集合)",h:"設6",hi:1}]},
+ {id:"bar",t:"🎰 BAR揃いAT直撃",items:[
+   {k:"barHit",l:"BAR揃い回数"},{k:"barDirect",l:"↑うちAT直撃",s:"設1:3%→設6:7%"}]},
+ {id:"cont",t:"🌀 超革命ラッシュ 継続時G数",items:[
+   {k:"g10",l:"10G",s:"通常継続"},{k:"g20",l:"20G",s:"通常継続"},
+   {k:"g50",l:"50G",s:"ハラキリドライブ"},{k:"g100",l:"100G以上",s:"ハラキリドライブ"},{k:"gUlt",l:"究極ハラキリチャレンジ",s:"ハラキリドライブ"}]},
+ {id:"round",t:"🎮 ラウンド開始画面(10セット毎)",items:[
+   {k:"rdDef",l:"デフォ/赤背景"},{k:"rdMarie",l:"マリエ(水着)",h:"高設定弱"},
+   {k:"rdUnit1",l:"1号機ルーン漏れ",h:"高設定強"},{k:"rdSaki",l:"200年後のサキ",h:"設4↑"},{k:"rdLiese",l:"リーゼロッテ",h:"設6",hi:1}]},
+ {id:"sub",t:"📡 サブ液晶(バッフェ)",items:[
+   {k:"subNone",l:"無人タイプ",s:"奇数示唆"},{k:"subHuman",l:"有人タイプ",s:"偶数示唆"}]},
+ {id:"magi",t:"✨ マギウスマーク",items:[
+   {k:"magi4",l:"4個",h:"設4↑"},{k:"magi5",l:"5個",h:"設5↑"},{k:"magi6",l:"6個",h:"設6",hi:1}]},
+ {id:"conf",t:"🏆 枚数・G数 確定示唆",items:[
+   {k:"o456",l:"456枚OVER",h:"設4↑"},{k:"o555",l:"555枚OVER",h:"設5↑"},{k:"o666",l:"666枚OVER",h:"設6",hi:1},
+   {k:"g22",l:"開始+22G",h:"設2↑"},{k:"g44",l:"開始+44G",h:"設4↑"},{k:"g66",l:"開始+66G",h:"設6",hi:1}]}
 ];
+var ALLCK=[];CNTS.forEach(function(s){s.items.forEach(function(i){ALLCK.push(i.k)})});
+/* 示唆タブ 表示順（使用頻度の高い順） */
+var CNT_ORDER=["sub","bar","end","cont","round","magi","conf"];
+var CNTMAP={};CNTS.forEach(function(s){CNTMAP[s.id]=s});
+/* 終了画面イベント→カウンターキー対応 */
+var SCR2CK={def:"e_def",blue1:"e_blue1",blue2:"e_blue2",red1:"e_red1",red2:"e_red2",purple:"e_purple",silver:"e_silver",gold:"e_gold"};
 
-var ALL_CC_KEYS=[];
-CNTS.forEach(function(s){s.items.forEach(function(i){ALL_CC_KEYS.push(i.k)})});
-
+/* ===== 状態 ===== */
 var LOG=[],CC={},COL={},TAB="rec",inAT=false;
-var curEv=null,curG="",curRes=null,curScr=null,curNote="",curMai="";
-var rstP=false,rstT=null,SK="vvv2";
+var curEv=null,curGroup=null,curG="",curRes=null,curScr=null,curBin=null,curCat=null,curOpt=null,curMai="",curNote="",curCyc=null,curPt=null,curStage=null;
+var rstP=false,rstT=null,SK="vvv2v3";
 
-function initC(){ALL_CC_KEYS.forEach(function(k){CC[k]=0});CNTS.forEach(function(s){COL[s.id]=false})}
-function load(){initC();try{var d=JSON.parse(localStorage.getItem(SK+"c"));if(d)for(var k in d)if(k in CC)CC[k]=d[k]}catch(e){}
-try{LOG=JSON.parse(localStorage.getItem(SK+"l"))||[]}catch(e){LOG=[]}
-inAT=false;for(var i=LOG.length-1;i>=0;i-=1){if(LOG[i].ev==="at"||LOG[i].ev==="sat"){inAT=true;break}if(LOG[i].ev==="atend"){break}}}
+function initC(){ALLCK.forEach(function(k){CC[k]=0});CNTS.forEach(function(s){COL[s.id]=(s.id!=="sub"&&s.id!=="bar")})}
+function load(){initC();
+ try{var d=JSON.parse(localStorage.getItem(SK+"c"));if(d)for(var k in d)if(k in CC)CC[k]=d[k]}catch(e){}
+ try{LOG=JSON.parse(localStorage.getItem(SK+"l"))||[]}catch(e){LOG=[]}
+ inAT=false;for(var i=LOG.length-1;i>=0;i--){if(LOG[i].ev==="at"||LOG[i].ev==="sat"){inAT=true;break}if(LOG[i].ev==="atend"){break}}}
 function save(){try{localStorage.setItem(SK+"c",JSON.stringify(CC));localStorage.setItem(SK+"l",JSON.stringify(LOG))}catch(e){}}
-
-function est(v){if(!v||v===Infinity)return null;var c=1,m=Infinity;for(var i=0;i<SETS.length;i++){var s=SETS[i],d=Math.abs(v-REF.hit[s]);if(d<m){m=d;c=s}}return c}
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
 function rate(n,d){return d?(n/d*100).toFixed(1):"0"}
-function gev(id){for(var i=0;i<EVS.length;i++)if(EVS[i].id===id)return EVS[i];return null}
 
-function totalG(){
-var total=0,maxInInterval=0;
-for(var i=0;i<LOG.length;i++){
-var e=LOG[i],g=parseInt(e.g)||0;
-if(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend"){
-if(e.ev==="atend"){total+=maxInInterval;maxInInterval=0}
-continue}
-if(g>maxInInterval)maxInInterval=g}
-total+=maxInInterval;
-return total}
+/* 総G: AT/ボーナス/ハラキリ区間を除いた通常時Gの積算 */
+function totalG(){var tot=0,mx=0;for(var i=0;i<LOG.length;i++){var e=LOG[i],g=parseInt(e.g)||0;
+ if(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend"){if(e.ev==="atend"){tot+=mx;mx=0}continue}
+ if(g>mx)mx=g}tot+=mx;return tot}
 
-function buildNote(e){
-var b=[];
-if(e.res==="s")b.push("成功");if(e.res==="f")b.push("失敗");
-if(e.res==="at")b.push("AT突入");if(e.res==="hit")b.push("揃い");if(e.res==="miss")b.push("ハズレ");
-if(e.res==="direct")b.push("AT直撃");if(e.res==="rd")b.push("ルーンドライブ");if(e.res==="none")b.push("恩恵なし");
-if(e.scr){var sl={"def":"デフォルト","wh":"白枠","bl":"青枠","red":"赤枠","pur":"紫枠","sil":"銀枠","gold":"金枠","disp":"ディスプレイあり"};b.push("画面："+(sl[e.scr]||e.scr))}
-if(e.mai)b.push(e.mai+"枚");
-if(e.note)b.push(e.note);
-return b.join("　")}
+function stats(){var s={cz:0,czS:0,kaku:0,kessen:0,at:0,sat:0};
+ for(var i=0;i<LOG.length;i++){var e=LOG[i];
+  if(e.ev==="dorusia"){s.cz++;if(e.res==="s")s.czS++}
+  if(e.ev==="kaku")s.kaku++;if(e.ev==="kessen")s.kessen++;if(e.ev==="at")s.at++;if(e.ev==="sat")s.sat++}
+ s.hit=s.kaku+s.kessen+s.at+s.sat;return s}
 
-function stats(){
-var s={bn:0,kakuN:0,kessN:0,atN:0,satN:0,czA:0,czS:0,haraN:0,barN:0};
-for(var i=0;i<LOG.length;i++){var e=LOG[i];
-if(e.ev==="cz"){s.czA+=1;if(e.res==="s")s.czS+=1}
-if(e.ev==="kaku"){s.bn+=1;s.kakuN+=1}
-if(e.ev==="kess"){s.bn+=1;s.kessN+=1}
-if(e.ev==="at")s.atN+=1;if(e.ev==="sat")s.satN+=1;
-if(e.ev==="hara")s.haraN+=1;if(e.ev==="bar")s.barN+=1}
-/* 初当たり合算 = 革命BN + 決戦BN + AT直撃 + 超AT直撃 */
-s.hitAll=s.kakuN+s.kessN+s.atN+s.satN;
-return s}
+/* 前兆(規定pt)からの特殊テーブル弱シグナル: 2周期目以降で≤400pt */
+function zenPt(){var lo=0,tot=0;
+ for(var i=0;i<LOG.length;i++){var e=LOG[i];if(e.ev==="zencho"&&e.cyc>=2&&e.pt){tot++;if(e.pt<=400)lo++}}
+ return{lo:lo,tot:tot}}
 
-function cMin(){var m=0;
-if(CC.scrGold||CC.o666||CC.g66||CC.atDisp||CC.magi6||CC.rdLiese)m=6;
-else if(CC.o555||CC.magi5)m=Math.max(m,5);
-else if(CC.scrSil||CC.o456||CC.g44||CC.rdSaki||CC.yume4||CC.magi4)m=Math.max(m,4);
-else if(CC.scrPur||CC.g22)m=Math.max(m,2);
-return m}
+/* ============================================================ ベイズ推定 ============================================================ */
+function estimate(){
+ var ll={},i,s,reasons=[],hardMin=0,conf=[],used=false;
+ for(i=0;i<SETS.length;i++)ll[SETS[i]]=0;
+ function bino(succ,trials,rates,label){if(!trials)return;used=true;
+  for(i=0;i<SETS.length;i++){s=SETS[i];var p=Math.min(.999,Math.max(.001,rates[s]));ll[s]+=succ*Math.log(p)+(trials-succ)*Math.log(1-p);}
+  reasons.push(label+" "+succ+"/"+trials);}
+ // 初当たり合算
+ var tG=totalG(),st=stats();
+ if(tG>=800&&st.hit>0){used=true;for(i=0;i<SETS.length;i++){s=SETS[i];var p=1/HITX[s];ll[s]+=st.hit*Math.log(p)+(tG-st.hit)*Math.log(1-p);}
+  reasons.push("初当たり 1/"+Math.round(tG/st.hit));}
+ // 終了画面（カウンター集計）
+ var escN=0;END_FRAMES.forEach(function(f){var n=CC[SCR2CK[f.k]];if(n>0){escN+=n;used=true;
+   for(i=0;i<SETS.length;i++){s=SETS[i];ll[s]+=n*Math.log(Math.max(0.4,ENDSCR[f.k][s])/100);}}});
+ if(escN)reasons.push("終了画面 "+escN+"回");
+ // BAR直撃 / ハラキリ / 規定pt / サブ液晶
+ if(CC.barHit>0)bino(CC.barDirect,CC.barHit,SIG_BARDIRECT,"BAR直撃");
+ var renT=CC.g10+CC.g20+CC.g50+CC.g100+CC.gUlt;
+ var drive=CC.g50+CC.g100+CC.gUlt; /* 50G/100G/究極=ハラキリドライブ発生 */
+ if(renT>=3)bino(drive,renT,SIG_HARA,"ハラキリDR("+drive+"/"+renT+"連)");
+ var zp=zenPt();if(zp.tot>=4)bino(zp.lo,zp.tot,P400,"規定pt≤400");
+ var subN=CC.subNone+CC.subHuman;if(subN>0){used=true;
+   for(i=0;i<SETS.length;i++){s=SETS[i];ll[s]+=CC.subNone*Math.log(SUBMON.none[s]/100)+CC.subHuman*Math.log(SUBMON.human[s]/100);}
+   reasons.push("サブ液晶 無"+CC.subNone+"/有"+CC.subHuman);}
+ // 確定・示唆（ハード制約）
+ if(CC.o666||CC.g66||CC.magi6||CC.rdLiese||CC.e_gold){hardMin=6;conf.push("設6濃厚");}
+ else{if(CC.o555||CC.magi5){hardMin=Math.max(hardMin,5);conf.push("設5以上");}
+  if(CC.o456||CC.g44||CC.magi4||CC.rdSaki||CC.e_silver){hardMin=Math.max(hardMin,4);conf.push("設4以上");}
+  if(CC.g22||CC.e_purple){hardMin=Math.max(hardMin,2);conf.push("設2以上");}}
+ for(i=0;i<LOG.length;i++)if(LOG[i].scr2==="photo"){hardMin=Math.max(hardMin,6);conf.push("AT写真→設6");break}
+ // softmax + hardマスク
+ var mx=-Infinity;for(i=0;i<SETS.length;i++)if(ll[SETS[i]]>mx)mx=ll[SETS[i]];
+ var ex={},z=0;for(i=0;i<SETS.length;i++){s=SETS[i];var v=(s<hardMin)?0:Math.exp(ll[s]-mx);ex[s]=v;z+=v;}
+ var post={};for(i=0;i<SETS.length;i++){s=SETS[i];post[s]=z?ex[s]/z:1/SETS.length;}
+ var best=SETS[0],bp=0,esum=0,ent=0;
+ for(i=0;i<SETS.length;i++){s=SETS[i];if(post[s]>bp){bp=post[s];best=s}esum+=s*post[s];if(post[s]>0)ent-=post[s]*Math.log(post[s]);}
+ return {post:post,best:best,bestP:bp,exp:esum,used:used,reasons:reasons,hardMin:hardMin,confList:conf};}
 
-function render(){rHdr();rQS();rTabs();
-if(TAB==="rec")rRec();else if(TAB==="cnt")rCnt();else if(TAB==="tl")rTL();else rExp()}
+/* ============================================================ RENDER ============================================================ */
+function render(){rHdr();rEst();rQS();rTabs();
+ if(TAB==="rec")rRec();else if(TAB==="cnt")rCnt();else if(TAB==="tl")rTL();else if(TAB==="info")rInfo();else rExp()}
 
-function rHdr(){
-var h='<div class="hr"><div><div class="ht">ヴァルヴレイヴ2</div><div class="hs">'+(inAT?'【AT中】':'通常時')+' / '+LOG.length+'件</div></div>';
-h+='<button type="button" class="hb'+(rstP?' p':'')+'" id="bR">'+(rstP?'確定？':'リセット')+'</button></div>';
-var cm=cMin();if(cm>0)h+='<div class="cfm" style="background:'+SC[cm]+'22;border:1px solid '+SC[cm]+';color:'+SC[cm]+'">🎯 設定'+cm+'以上確定</div>';
-document.getElementById("hdr").innerHTML=h;
-var b=document.getElementById("bR");if(b){b.addEventListener("click",function(e){e.preventDefault();doRst()});b.addEventListener("touchend",function(e){e.preventDefault();doRst()})}}
+function rHdr(){var h='<div class="hr"><div><div class="ht">ヴァルヴレイヴ2</div><div class="hs">'+(inAT?'⚡AT中':'通常時')+' ・ '+LOG.length+'件</div></div>';
+ h+='<button type="button" class="hb'+(rstP?' p':'')+'" id="bR">'+(rstP?'もう一度でリセット':'リセット')+'</button></div>';
+ document.getElementById("hdr").innerHTML=h;
+ var b=document.getElementById("bR");if(b)b.addEventListener("click",function(e){e.preventDefault();doRst()})}
 
-function rQS(){
-var s=stats(),tG=totalG(),h="";
-h+='<div class="qc"><span class="ql">総G</span> <span class="qv">'+tG+'</span></div>';
-if(tG>0&&s.hitAll>0){var v=tG/s.hitAll,e=est(v);h+='<div class="qc"><span class="ql">初当</span> <span class="qv">1/'+v.toFixed(0)+'</span>'+(e?' <span class="qe" style="color:'+SC[e]+'">設'+e+'</span>':'')+'</div>'}
-if(s.czA>0)h+='<div class="qc"><span class="ql">CZ</span> <span class="qv">'+s.czS+'/'+s.czA+'</span></div>';
-if(CC.haraOK+CC.haraNG>0){var hr=rate(CC.haraOK,CC.haraOK+CC.haraNG);h+='<div class="qc"><span class="ql">ハラキリDR率</span> <span class="qv">'+hr+'%</span></div>'}
-document.getElementById("qs").innerHTML=h}
+function rEst(){var E=estimate(),h='';
+ h+='<div class="est-top"><span class="est-lb">推定</span>';
+ if(E.used){h+='<span class="est-main" style="color:'+SC[E.best]+'">設定'+E.best+'</span><span class="est-conf">確率'+(E.bestP*100).toFixed(0)+'% / 期待値'+E.exp.toFixed(1)+'</span>';}
+ else h+='<span class="est-main" style="color:rgba(255,255,255,.3)">データ待ち</span>';
+ h+='</div><div class="bars">';
+ for(var i=0;i<SETS.length;i++){var s=SETS[i],p=E.post[s]||0;
+  h+='<div class="bar-row"><div class="bar-s" style="color:'+SC[s]+';background:'+SC[s]+'22">'+s+'</div>';
+  h+='<div class="bar-track"><div class="bar-fill" style="width:'+(p*100).toFixed(1)+'%;background:'+SC[s]+'"></div></div>';
+  h+='<div class="bar-pct" style="color:'+(E.used&&p>=E.bestP?SC[s]:'rgba(255,255,255,.5)')+'">'+(p*100).toFixed(0)+'%</div></div>';}
+ h+='</div>';
+ if(E.hardMin>1){var cm=E.hardMin;h+='<div class="rng" style="background:'+SC[cm]+'22;color:'+SC[cm]+';border:1px solid '+SC[cm]+'">🎯 設定'+cm+'以上 確定（'+E.confList.join('・')+'）</div>';}
+ if(E.reasons.length)h+='<div class="est-note"><b>根拠:</b> '+E.reasons.join(' / ')+'</div>';
+ document.getElementById("est").innerHTML=h}
 
-function rTabs(){
-var ts=[{id:"rec",ic:"✏️",l:"記録"},{id:"cnt",ic:"🔢",l:"カウンター"},{id:"tl",ic:"📋",l:"履歴"},{id:"exp",ic:"📤",l:"出力"}];
-var h="";for(var i=0;i<ts.length;i++)h+='<div class="tb'+(TAB===ts[i].id?' a':'')+'" data-tab="'+ts[i].id+'"><span class="tb-ic">'+ts[i].ic+'</span>'+ts[i].l+'</div>';
-document.getElementById("tabs").innerHTML=h}
+function rQS(){var s=stats(),tG=totalG(),h='';
+ h+='<div class="qc"><span class="ql">総G</span><span class="qv">'+tG+'</span></div>';
+ if(tG>0&&s.hit>0)h+='<div class="qc"><span class="ql">初当</span><span class="qv">1/'+Math.round(tG/s.hit)+'</span></div>';
+ if(s.cz>0)h+='<div class="qc"><span class="ql">CZ成功</span><span class="qv">'+s.czS+'/'+s.cz+'</span></div>';
+ var renT=CC.g10+CC.g20+CC.g50+CC.g100+CC.gUlt,drv=CC.g50+CC.g100+CC.gUlt;
+ if(renT>0)h+='<div class="qc"><span class="ql">ドライブ</span><span class="qv">'+drv+'/'+renT+'連 ('+rate(drv,renT)+'%)</span>'+(drv>0?' <span class="qv" style="color:#ffd54f">1/'+(renT/drv).toFixed(1)+'連</span>':'')+'</div>';
+ var zp=zenPt();if(zp.tot>0)h+='<div class="qc"><span class="ql">規定pt≤400</span><span class="qv">'+zp.lo+'/'+zp.tot+'</span></div>';
+ document.getElementById("qs").innerHTML=h}
 
-function rRec(){
-var ct=document.getElementById("ct"),h='<div class="inp">';
-h+='<div class="ig"><label>'+(inAT?'【AT中】G数':'通常時G数')+'</label><input type="number" inputmode="numeric" id="iG" value="'+curG+'" placeholder="0">';
-h+='<span class="tot">(総G: '+totalG()+')</span></div>';
-h+='<div class="eg">';
-for(var i=0;i<EVBTNS.length;i++){var eb=EVBTNS[i];
-h+='<button type="button" class="eb '+eb.c+(curEv===eb.id?' s':'')+'" data-ev="'+eb.id+'">'+eb.l+'</button>'}
-h+='</div>';
-if(curEv){
-var ev=gev(curEv);
-if(ev&&ev.cat==="cz"){
-h+='<div class="dt"><div class="dt-t">結果</div><div class="dt-r">';
-for(var i2=0;i2<CZ_RES.length;i2++){var r=CZ_RES[i2];h+='<button type="button" class="dt-b'+(curRes===r.id?' s':'')+'" data-res="'+r.id+'">'+r.l+'</button>'}
-h+='</div></div>';
-h+='<div class="dt"><div class="dt-t">終了画面</div><div class="dt-r">';
-for(var i5=0;i5<END_SCR.length;i5++){var sc2=END_SCR[i5];h+='<button type="button" class="dt-b'+(curScr===sc2.id?' s':'')+'" data-scr="'+sc2.id+'">'+sc2.l+'</button>'}
-h+='</div></div>'}
-if(ev&&ev.cat==="bn"){
-h+='<div class="dt"><div class="dt-t">結果</div><div class="dt-r">';
-for(var i3=0;i3<BN_RES.length;i3++){var r2=BN_RES[i3];h+='<button type="button" class="dt-b'+(curRes===r2.id?' s':'')+'" data-res="'+r2.id+'">'+r2.l+'</button>'}
-h+='</div></div>';
-h+='<div class="dt"><div class="dt-t">終了画面</div><div class="dt-r">';
-for(var i6=0;i6<END_SCR.length;i6++){var sc3=END_SCR[i6];h+='<button type="button" class="dt-b'+(curScr===sc3.id?' s':'')+'" data-scr="'+sc3.id+'">'+sc3.l+'</button>'}
-h+='</div></div>'}
-if(ev&&ev.cat==="bar"){
-h+='<div class="dt"><div class="dt-t">結果</div><div class="dt-r">';
-for(var i7=0;i7<BAR_RES.length;i7++){var r3=BAR_RES[i7];h+='<button type="button" class="dt-b'+(curRes===r3.id?' s':'')+'" data-res="'+r3.id+'">'+r3.l+'</button>'}
-h+='</div></div>'}
-if(curEv==="atend"){
-h+='<div class="dt"><div class="dt-t">AT終了画面</div><div class="dt-r">';
-for(var i8=0;i8<AT_END_SCR.length;i8++){var sc4=AT_END_SCR[i8];h+='<button type="button" class="dt-b'+(curScr===sc4.id?' s':'')+'" data-scr="'+sc4.id+'">'+sc4.l+'</button>'}
-h+='</div></div>';
-h+='<div class="dt"><div class="dt-t">獲得枚数</div><input type="number" inputmode="numeric" class="dt-f" id="iMai" value="'+curMai+'" placeholder="枚数"></div>'}
-h+='<div class="dt"><input type="text" class="dt-f" id="iN" placeholder="メモ（任意）" value="'+curNote+'"></div>'}
-var ok=!!curEv;
-h+='<button type="button" class="ab '+(ok?'ok':'no')+'" data-a="add">'+(ok?'✓ 記録する':'↑ イベントを選択')+'</button></div>';
-if(LOG.length>0){h+='<div class="rec-t">直近</div>';h+=buildTable(Math.max(0,LOG.length-5),LOG.length,true)}
-ct.innerHTML=h}
+function rTabs(){var ts=[{id:"rec",ic:"✏️",l:"記録"},{id:"cnt",ic:"🎯",l:"示唆"},{id:"tl",ic:"📋",l:"履歴"},{id:"info",ic:"📖",l:"解説"},{id:"exp",ic:"📤",l:"出力"}];
+ var h="";for(var i=0;i<ts.length;i++)h+='<div class="tb'+(TAB===ts[i].id?' a':'')+'" data-tab="'+ts[i].id+'"><span class="tb-ic">'+ts[i].ic+'</span>'+ts[i].l+'</div>';
+ document.getElementById("tabs").innerHTML=h}
 
-function buildTable(from,to,mini){
-var h='<table class="tbl"><thead><tr><th style="width:60px">G数</th><th>イベント</th><th>備考</th>'+(mini?'<th style="width:28px"></th>':'')+'</tr></thead><tbody>';
-for(var i=from;i<to;i++){
-var e=LOG[i],ev=gev(e.ev),g=e.g||"0";
-var gFmt;
-if(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend")gFmt='【'+g+'】';
-else gFmt=g;
-h+='<tr><td class="gm">'+gFmt+'</td>';
-h+='<td class="ev '+(ev?ev.c:'')+'">'+(ev?ev.l:e.ev)+'</td>';
-h+='<td class="nt">'+buildNote(e)+'</td>';
-if(mini)h+='<td class="del-c"><button type="button" class="td-d" data-del="'+i+'">×</button></td>';
-h+='</tr>'}
-h+='</tbody></table>';return h}
+function detRow(t,arr,key){var h='<div class="dt"><div class="dt-t">'+t+'</div><div class="dt-r">';
+ var cur=(key==="res"?curRes:key==="bin"?curBin:key==="sub"?curSub:key==="scr2"?curScr:null);
+ for(var i=0;i<arr.length;i++){var r=arr[i];h+='<button type="button" class="dt-b'+(cur===r.id?' s':'')+'" data-'+key+'="'+r.id+'">'+r.l+(r.s?'<small style="opacity:.5"> '+r.s+'</small>':'')+'</button>';}
+ return h+'</div></div>'}
+function detFrames(){var h='<div class="dt"><div class="dt-t">終了画面（枠色）</div><div class="dt-r">';
+ for(var i=0;i<END_FRAMES.length;i++){var f=END_FRAMES[i];h+='<button type="button" class="dt-b'+(curScr===f.k?' s':'')+'" data-scr="'+f.k+'" style="'+(curScr===f.k?'':'color:'+f.c)+'">'+f.l+'</button>';}
+ return h+'</div></div>'}
 
-function rTL(){
-var ct=document.getElementById("ct");
-if(!LOG.length){ct.innerHTML='<div class="tl-mt">まだ記録がありません</div>';return}
-ct.innerHTML=buildTable(0,LOG.length,true)}
+function rRec(){var ct=document.getElementById("ct"),h='<div class="rec">';
+ h+='<div class="rowg"><label>'+(inAT?'⚡AT中 G数':'通常時 G数')+'</label><input type="number" inputmode="numeric" id="iG" value="'+esc(curG)+'" placeholder="0" class="gin"><span class="gtot">総G '+totalG()+'</span></div>';
+ h+='<div class="grid g3">';
+ EV_LAYOUT.forEach(function(it){
+  if(it.ev){var e=EVMAP[it.ev],sel=(curEv===it.ev);
+   h+='<button type="button" class="eb'+(sel?' s':'')+'" data-ev="'+it.ev+'" style="background:'+e.c+'1e;color:'+e.c+';border-color:'+e.c+'30">'+e.l+(e.s?'<small>'+e.s+'</small>':'')+'</button>';}
+  else{var gsel=(curGroup===it.grp);
+   h+='<button type="button" class="eb'+(gsel?' s':'')+'" data-grp="'+it.grp+'" style="background:'+it.c+'1e;color:'+it.c+';border-color:'+it.c+'30">'+it.l+'<small>▾ '+it.mem.length+'種</small></button>';}
+ });
+ h+='</div>';
+ if(curGroup){var gg=EV_LAYOUT.filter(function(x){return x.grp===curGroup})[0];
+  h+='<div class="grid g2" style="margin-top:6px">';
+  gg.mem.forEach(function(mid){var me=EVMAP[mid],sel=(curEv===mid);
+   h+='<button type="button" class="eb'+(sel?' s':'')+'" data-ev="'+mid+'" style="background:'+me.c+'1e;color:'+me.c+';border-color:'+me.c+'30">'+me.l+(me.s?'<small>'+me.s+'</small>':'')+'</button>';});
+  h+='</div>';}
+ if(curEv){var ev=EVMAP[curEv];
+  // 前兆: 周期→ポイント
+  if(ev.cat==="zencho"){
+   h+='<div class="flow"><div class="flow-t">① 周期を選択</div><div class="grid g6">';
+   ZEN_CYC.forEach(function(cy){h+='<button type="button" class="ptbtn'+(curCyc===cy?' s':'')+'" data-cyc="'+cy+'">'+cy+'</button>'});
+   h+='</div>';
+   if(curCyc){h+='<div class="flow-t" style="margin-top:8px">② ポイントを選択</div><div class="grid g3">';
+    ZEN_PT.forEach(function(pt){h+='<button type="button" class="ptbtn'+(curPt===pt?' s':'')+'" data-pt="'+pt+'">'+pt+'</button>'});
+    h+='</div>';}
+   if(curPt){h+='<div class="flow-t" style="margin-top:8px">③ 前兆ステージ（任意）</div><div class="dt-r">';
+    ZEN_STAGE.forEach(function(st){h+='<button type="button" class="dt-b'+(curStage===st.id?' s':'')+'" data-stage="'+st.id+'" style="text-align:left">'+st.l+'<small style="display:block;font-size:8px;opacity:.55">'+st.s+'</small></button>'});
+    h+='</div>';}
+   h+='<div style="font-size:9px;color:rgba(255,255,255,.32);margin-top:6px">2周期目以降で規定pt≤400が続く→特殊テーブル濃厚（設1:1%→設6:12%）。地球脱出作戦は本前兆期待度UP。</div></div>';}
+  // 演出/示唆メモ: 種類→内容（各示唆を表示）
+  if(ev.cat==="enshutsu"){
+   h+='<div class="flow"><div class="flow-t">① 種類を選択</div><div class="dt-r">';
+   ENSHUTSU.forEach(function(g){h+='<button type="button" class="dt-b'+(curCat===g.id?' s':'')+'" data-encat="'+g.id+'">'+g.l+'</button>'});
+   h+='</div>';
+   if(curCat){var grp=ENSHUTSU.filter(function(x){return x.id===curCat})[0];
+    h+='<div class="flow-t" style="margin-top:8px">② 内容を選択（示唆表示）</div><div class="dt-r">';
+    grp.opts.forEach(function(o){h+='<button type="button" class="dt-b'+(curOpt===o.id?' s':'')+'" data-enopt="'+o.id+'" style="text-align:left">'+o.l+(o.s?'<small style="display:block;font-size:8px;opacity:.55">'+o.s+'</small>':'')+'</button>'});
+    h+='</div>';}
+   h+='<div style="font-size:9px;color:rgba(255,255,255,.3);margin-top:6px">これらはモード/周期/前兆の示唆（設定示唆ではないため推測には加算しません）。ピノ台詞は規定ポイントの示唆です。</div></div>';}
+  // CZ
+  if(ev.cat==="cz")h+=detRow("結果",CZ_RES,"res")+detFrames();
+  // 革命BN: 終了画面 + ボーナス中示唆
+  if(ev.cat==="bn_k")h+=detFrames()+detRow("ボーナス中の示唆",BONUS_IN,"bin");
+  // 決戦BN: 終了画面
+  if(ev.cat==="bn")h+=detFrames();
+  // AT終了: 画面 + 枚数
+  if(ev.cat==="atend"){h+=detRow("AT終了画面",AT_ENDSCR,"res");
+   h+='<div class="dt"><div class="dt-t">獲得枚数（456/555/666で自動示唆）</div><input type="number" inputmode="numeric" class="dt-f" id="iMai" value="'+esc(curMai)+'" placeholder="枚数"></div>';}
+  h+='<div class="dt"><input type="text" class="dt-f" id="iN" placeholder="メモ（任意）" value="'+esc(curNote)+'"></div>';}
+ var ok=canAdd();
+ h+='<button type="button" class="ab '+(ok?'ok':'no')+'" data-a="add">'+(ok?'✓ 記録する':(curEv?'↑ 内容を選択':'↑ イベントを選択'))+'</button>';
+ if(LOG.length>0){h+='<div class="rec-t">直近の記録</div>'+buildTable(Math.max(0,LOG.length-6),LOG.length,true);}
+ h+='</div>';ct.innerHTML=h}
 
-function rCnt(){
-var ct=document.getElementById("ct"),tG=totalG(),h='<div class="cnt">';
-for(var si=0;si<CNTS.length;si++){
-var sec=CNTS[si],cl=COL[sec.id];
-h+='<div class="cs"><div class="cs-h" data-tog="'+sec.id+'"><div class="t">'+sec.t+'</div><span class="ar">'+(cl?'▶':'▼')+'</span></div>';
-if(!cl){h+='<div class="cs-b">';
-for(var ii=0;ii<sec.items.length;ii++){var it=sec.items[ii];
-h+='<div class="ci"><div class="ci-l"><div class="ci-n">';
-if(it.dot)h+='<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+it.dot+';margin-right:3px"></span>';
-h+=it.l+'</div>';if(it.h)h+='<div class="ci-h">'+it.h+'</div>';if(it.s)h+='<div class="ci-s">'+it.s+'</div>';
-h+='</div><div class="cw"><button type="button" class="cm" data-cd="'+it.k+'">−</button><div class="vl">'+CC[it.k]+'</div><button type="button" class="cp2" data-ci="'+it.k+'">＋</button></div></div>'}
-/* Computed */
-if(sec.id==="hd"&&(CC.haraOK+CC.haraNG)>0){
-h+='<div class="cc"><div class="cc-l">ハラキリDR発生率: '+CC.haraOK+'/'+(CC.haraOK+CC.haraNG)+' ('+rate(CC.haraOK,CC.haraOK+CC.haraNG)+'%)</div><div class="cc-sub">参考: 設1≒5% 設6≒17%</div></div>'}
-if(sec.id==="bardirect"&&CC.barHit>0){
-h+='<div class="cc"><div class="cc-l">BAR揃いAT直撃率: '+CC.barDirect+'/'+CC.barHit+' ('+rate(CC.barDirect,CC.barHit)+'%)</div><div class="cc-sub">参考: 設1≒3% 設6≒7%</div></div>'}
-if(sec.id==="tbl"&&(CC.tblLow+CC.tblHigh)>0){
-h+='<div class="cc"><div class="cc-l">特殊テーブル率: '+CC.tblHigh+'/'+(CC.tblLow+CC.tblHigh)+' ('+rate(CC.tblHigh,CC.tblLow+CC.tblHigh)+'%)</div><div class="cc-sub">参考: 設1≒1% 設6≒12%</div></div>'}
-h+='</div>'}h+='</div>'}h+='</div>';ct.innerHTML=h}
+function canAdd(){if(!curEv)return false;var ev=EVMAP[curEv];
+ if(ev.cat==="zencho")return!!(curCyc&&curPt);
+ if(ev.cat==="enshutsu")return!!(curCat&&curOpt);
+ return true}
 
-function rExp(){
-var ct=document.getElementById("ct"),s=stats(),tG=totalG();
-var t="━━ ヴァルヴレイヴ2 ━━\n"+new Date().toLocaleString("ja-JP")+"\n\n";
-t+="【タイムライン】\n";
-for(var i=0;i<LOG.length;i++){var e=LOG[i],ev=gev(e.ev),g=e.g||"0";
-var gF=e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend"?"【"+g+"】":g;
-t+=gF+"　"+(ev?ev.l:e.ev)+"　"+buildNote(e)+"\n"}
-t+="\n【集計】\n総G: "+tG+"\n";
-if(tG>0&&s.hitAll>0)t+="初当たり合算: 1/"+(tG/s.hitAll).toFixed(0)+"\n";
-t+="革命BN:"+s.kakuN+" 決戦BN:"+s.kessN+" AT:"+s.atN+" 超AT:"+s.satN+"\n";
-if(s.czA)t+="CZ: "+s.czS+"/"+s.czA+" ("+rate(s.czS,s.czA)+"%)\n";
-if(CC.haraOK+CC.haraNG>0)t+="ハラキリDR: "+CC.haraOK+"/"+(CC.haraOK+CC.haraNG)+" ("+rate(CC.haraOK,CC.haraOK+CC.haraNG)+"%)\n";
-var cm=cMin();if(cm>0)t+="設定"+cm+"以上確定\n";
-var h='<div class="exp"><div class="exp-h">長押し→すべてを選択→コピー</div>';
-h+='<textarea class="exp-ta" id="eTA" readonly>'+t.replace(/</g,"&lt;")+'</textarea></div>';
-ct.innerHTML=h;var ta=document.getElementById("eTA");if(ta){ta.focus();ta.setSelectionRange(0,ta.value.length)}}
+function buildNote(e){var b=[];
+ var rl={s:"成功",f:"失敗",direct:"AT直撃",none:"恩恵なし",ok:"ドライブ突破",ng:"失敗",def:"デフォ",photo:"写真あり"};
+ if(e.cyc){b.push(e.cyc+"周期-"+e.pt+"pt");if(e.stage){var zs=ZEN_STAGE.filter(function(x){return x.id===e.stage})[0];if(zs)b.push(zs.l)}}
+ if(e.encat){var g=ENSHUTSU.filter(function(x){return x.id===e.encat})[0];
+  if(g){var o=g.opts.filter(function(x){return x.id===e.enopt})[0];b.push(g.l+"："+(o?o.l:e.enopt)+(o&&o.s?"("+o.s+")":""))}}
+ if(e.res)b.push(rl[e.res]||e.res);
+ if(e.scr){var f=END_FRAMES.filter(function(x){return x.k===e.scr})[0];if(f)b.push("画面:"+f.l)}
+ if(e.bin&&e.bin!=="none"){var bo=BONUS_IN.filter(function(x){return x.id===e.bin})[0];if(bo)b.push(bo.l)}
+ if(e.scr2==="photo")b.push("写真あり(6濃厚)");
+ if(e.mai)b.push(e.mai+"枚");
+ if(e.note)b.push(esc(e.note));
+ return b.join("　")}
 
-function addEntry(){
-if(!curEv)return;
-var e={ev:curEv,g:curG||"0"};
-if(curRes)e.res=curRes;if(curScr)e.scr=curScr;if(curNote)e.note=curNote;if(curMai)e.mai=curMai;
-if(curEv==="at"||curEv==="sat")inAT=true;
-if(curEv==="atend")inAT=false;
-LOG.push(e);curEv=null;curG="";curRes=null;curScr=null;curNote="";curMai="";save();render()}
+function buildTable(from,to,del){var h='<table class="tbl"><thead><tr><th style="width:56px">G数</th><th>イベント</th><th>備考</th>'+(del?'<th style="width:26px"></th>':'')+'</tr></thead><tbody>';
+ for(var i=to-1;i>=from;i--){var e=LOG[i],ev=EVMAP[e.ev],g=esc(e.g||"0");
+  var gF=(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend")?'【'+g+'】':g;
+  var lbl=ev?ev.l:esc(e.ev),col=ev?ev.c:"rgba(255,255,255,.55)";
+  h+='<tr><td class="gm">'+gF+'</td><td class="ev" style="color:'+col+'">'+lbl+'</td><td class="nt">'+buildNote(e)+'</td>';
+  if(del)h+='<td class="dc"><button type="button" class="td-d" data-del="'+i+'">×</button></td>';
+  h+='</tr>';}
+ return h+'</tbody></table>'}
 
-function doRst(){
-if(!rstP){rstP=true;if(rstT)clearTimeout(rstT);rstT=setTimeout(function(){rstP=false;render()},3000);render();return}
-LOG=[];initC();inAT=false;save();rstP=false;render()}
+function rTL(){var ct=document.getElementById("ct");
+ if(!LOG.length){ct.innerHTML='<div class="mt">まだ記録がありません</div>';return}
+ ct.innerHTML='<div style="padding:4px 4px 22px">'+buildTable(0,LOG.length,true)+'</div>'}
 
-document.getElementById("W").addEventListener("click",function(ev){
-var el=ev.target;
-for(var i=0;i<6&&el&&el!==this;i++){if(el.dataset){
-if(el.dataset.tab){TAB=el.dataset.tab;render();return}
-if(el.dataset.ev){curEv=(curEv===el.dataset.ev?null:el.dataset.ev);curRes=null;curScr=null;curMai="";render();return}
-if(el.dataset.res){curRes=(curRes===el.dataset.res?null:el.dataset.res);render();return}
-if(el.dataset.scr){curScr=(curScr===el.dataset.scr?null:el.dataset.scr);render();return}
-if(el.dataset.a==="add"){addEntry();return}
-if(el.dataset.del!==undefined){LOG.splice(parseInt(el.dataset.del),1);save();load();render();return}
-if(el.dataset.tog){COL[el.dataset.tog]=!COL[el.dataset.tog];render();return}
-if(el.dataset.ci){CC[el.dataset.ci]+=1;save();render();return}
-if(el.dataset.cd){if(CC[el.dataset.cd]>0)CC[el.dataset.cd]-=1;save();render();return}
-}el=el.parentElement}});
+function rCnt(){var ct=document.getElementById("ct"),h='<div class="cnt">';
+ for(var si=0;si<CNT_ORDER.length;si++){var sec=CNTMAP[CNT_ORDER[si]];if(!sec)continue;var cl=COL[sec.id];
+  h+='<div class="cs"><div class="cs-h" data-tog="'+sec.id+'"><div class="t">'+sec.t+'</div><span class="ar">'+(cl?'▶':'▼')+'</span></div>';
+  if(!cl){h+='<div class="cs-b">';
+   for(var ii=0;ii<sec.items.length;ii++){var it=sec.items[ii];
+    h+='<div class="ci"><div class="ci-l"><div class="ci-n">'+it.l+'</div>';
+    if(it.h)h+='<div class="ci-h'+(it.hi?' hi':'')+'">'+it.h+'</div>';if(it.s)h+='<div class="ci-s">'+it.s+'</div>';
+    h+='</div><div class="cw"><button type="button" class="cm" data-cd="'+it.k+'">−</button><div class="vl">'+CC[it.k]+'</div><button type="button" class="cp" data-ci="'+it.k+'">＋</button></div></div>';}
+   if(sec.id==="bar"&&CC.barHit>0)h+='<div class="cc"><div class="cc-l">BAR直撃率: '+CC.barDirect+'/'+CC.barHit+' ('+rate(CC.barDirect,CC.barHit)+'%)</div><div class="cc-s">設1:3%→設6:7%</div></div>';
+   if(sec.id==="cont"){var renC=CC.g10+CC.g20+CC.g50+CC.g100+CC.gUlt;if(renC>0){var drvC=CC.g50+CC.g100+CC.gUlt,norm=CC.g10+CC.g20;
+     h+='<div class="cc"><div class="cc-l">通常継続(10G/20G): '+norm+'/'+renC+' ('+rate(norm,renC)+'%) ［10G '+rate(CC.g10,renC)+'% / 20G '+rate(CC.g20,renC)+'%］</div>';
+     h+='<div class="cc-l" style="color:#ffd54f;font-weight:700;margin-top:3px">ハラキリドライブ発生(50G/100G/究極): '+drvC+'/'+renC+'連 ('+rate(drvC,renC)+'%'+(drvC>0?' = 1/'+(renC/drvC).toFixed(1)+'連':'')+')</div>';
+     h+='<div class="cc-s">目安/連 設1:1/19 設2:1/16 設4:1/8 設5:1/7 設6:1/6。ドライブ(50G/100G/究極)は有利区間切れ後に集中。切れ後の発生率ほど設定差が明確。</div></div>';}}
+   h+='</div>';}
+  h+='</div>';}
+ h+='<div style="font-size:10px;color:rgba(255,255,255,.3);padding:8px 4px;line-height:1.6">※終了画面は「記録」タブでCZ/ボーナス記録時に枠色を選ぶと自動でここに加算されます。データは複数攻略サイトの解析値（SANKYO公式一次情報ではない）。設定3は非搭載。</div>';
+ h+='</div>';ct.innerHTML=h}
+
+/* ===== 解説（設定示唆カタログ） ===== */
+var INFO=[
+ {id:"i_base",t:"📊 設定別 基本数値",custom:"base",note:"機械割・合成初当たりは3〜5ソース一致。勝率目安 設5≒80%/設6≒85%。設定3は非搭載。"},
+ {id:"i_end",t:"🖼️ CZ/ボーナス 終了画面",rows:[
+   ["白(コックピット)","デフォルト"],["青①ライゾウ達","奇数+高設定弱"],["青②サキ","偶数示唆"],
+   ["赤①コックピット","高設定弱"],["赤②ドルシア軍4人","高設定強"],
+   ["紫(ショーコ&サキ)","設定2以上濃厚",2],["銀(ピノ&プルー)","設定4以上濃厚",4],["金(全員集合)","設定6濃厚",6]],
+  note:"出現率は4ソース一致。赤枠は設定1でも出現＋ホールの終了画面カスタムで無効化され得るため過信禁物。"},
+ {id:"i_toku",t:"📍 規定ポイント / 特殊テーブル",rows:[
+   ["特殊テーブル選択率 設1","1%"],["設2","2%"],["設4","4%"],["設5","8%"],["設6","12%",6]],
+  note:"特殊テーブル当選＝その周期の規定ptが必ず400pt以下。2周期目以降に抽選。1→6で12倍差だが通常でも400以下は高頻度のため単発判別は不可。周期を跨いだ蓄積で見る。"},
+ {id:"i_strong",t:"⚔️ 超革命継続G数 / ハラキリDR / BAR直撃",rows:[
+   ["継続 10G/20G","通常継続（ドライブなし）"],
+   ["継続 50G/100G/究極","ハラキリドライブ発生"],
+   ["ハラキリDR 設1/設2","1/19連(5.3%) / 1/16連(6.3%)"],
+   ["ハラキリDR 設4/5/6","1/8(12.5%) / 1/7(14.3%) / 1/6(16.7%)",4],
+   ["BAR揃いAT直撃 設1→6","3→4→5→6→7%"]],
+  note:"ドライブ発生率＝(50G+100G+究極)÷総連数。設1〜6で単調に上昇。★有利区間切れ後に集中（設5実戦値 約19.7%）、切れ前・中革命(革命RUSH5〜9連)ではほぼ出ない(約2%)ため、切れ後の継続で見ると設定差が明確。設1/2=15〜20連,設4↑=6〜8連の基準を5段階補間（複数設定の公開解析値が乏しく近似値）。10G/20Gは通常継続。BAR揃い約1/682。"},
+ {id:"i_round",t:"🎮 ラウンド開始画面(10セット毎)",rows:[
+   ["マリエ(水着)","高設定弱"],["1号機ルーン漏れ","高設定強"],["200年後のサキ","設定4以上濃厚",4],["リーゼロッテ","設定6濃厚",6]],
+  note:"20セット目以降は「200年後のサキ」出現率上昇(設4・5で約20〜30%)。"},
+ {id:"i_conf",t:"🏆 確定・示唆トリガー",rows:[
+   ["456枚OVER","設定4以上",4],["555枚OVER","設定5以上",5],["666枚OVER","設定6濃厚",6],
+   ["+22G","設定2以上",2],["+44G","設定4以上",4],["+66G","設定6濃厚",6],
+   ["マギウスマーク4/5/6個","設4↑/設5↑/設6",4],["AT終了画面 写真あり","設定6濃厚",6]],
+  note:"引けば一発で設定域を確定。ツール上部の推定に自動反映。"},
+ {id:"i_sub",t:"📡 サブ液晶(バッフェ)",rows:[["無人タイプ","奇数設定示唆"],["有人タイプ","偶数設定示唆"]],
+  note:"振り分け例 設1=無人55/有人45、設2=無人45/有人55。弱い示唆。"},
+ {id:"i_eye",t:"🖼️ アイキャッチ（背景+影）",rows:[
+   ["黒背景","デフォルト"],["赤背景","2周期以内CZ濃厚"],["白背景","通常B以上80%"],
+   ["赤+ヴァルヴレイヴ影","次回革命BN+マリエモード66%"],["黒+ピノ影","当該/次周期CZ66%"],["白+ピノ影","通常B80%+当該/次周期CZ80%"]],
+  note:"モード/周期示唆（設定示唆ではない）。記録タブ「演出/示唆」で記録。"},
+ {id:"i_voice",t:"🔊 電脳終了ボイス / ピノ台詞(規定pt)",rows:[
+   ["お前にしては適切な判断","通常B以上50%"],["僕は化物なんかじゃない","通常B以上80%"],
+   ["ナーイス","当該/次周期CZ66%"],["自分で自分が分からない","当該/次周期CZ濃厚"],
+   ["ピノ:アヤシイ？","規定400pt以内濃厚"],["ピノ:チカイ！","200pt以内(本前兆50%)"],["ピノ:ケッコンケッコン","100pt以内(本前兆80%)"]],
+  note:"電脳終了ボイスはモード/周期示唆。ピノ台詞は規定ポイント示唆で、規定pt表示との矛盾で本前兆濃厚。"},
+ {id:"i_sub2",t:"📺 サブモニター機体 / 会話文字色",rows:[
+   ["Valvrave3","3周期内CZ80%&2周期内50%"],["Valvrave5","5周期以内CZ濃厚"],
+   ["PF火ノ輪/火遊/火人","通常B50%/濃厚/2周期内CZ濃厚"],["搭乗者マリエ","次回革命BN+マリエモード濃厚"],
+   ["会話 青文字","電脳ゾーン前兆?"],["会話 赤文字","本前兆濃厚"],["会話 紫文字","引き戻し/マリエモード示唆"]],
+  note:"機体は67G目・以降100G毎に出現（前兆中は前兆後）。バッフェ出現は別途「設定」示唆(奇偶)で示唆タブへ。前兆ステージ『地球脱出作戦』は本前兆期待度UP。"},
+ {id:"i_ceil",t:"🎯 天井・やめどき",rows:[
+   ["ボーナス/AT間天井","通常1500G+α"],["CZ間天井","999G+α"],["周期天井","通常最大6周期"],
+   ["やめどき","AT後 約66G(引き戻しゾーン)消化後"]],
+  note:"純増約9枚/G、コイン単価4.2円。革命RUSH後20%/超革命RUSH後25%で引き戻し。"}
+];
+var infoCol={};
+function rInfo(){var ct=document.getElementById("ct"),h='<div class="info">';
+ h+='<div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:10px;line-height:1.6">SANKYO「ヴァルヴレイヴ2」(2025.11) 設定判別まとめ。複数攻略サイトの解析値。各項目タップで開閉。</div>';
+ for(var i=0;i<INFO.length;i++){var sec=INFO[i],cl=infoCol[sec.id];
+  h+='<div class="isec"><div class="isec-h" data-itog="'+sec.id+'"><div class="t">'+sec.t+'</div><span class="ar">'+(cl?'▶':'▼')+'</span></div>';
+  if(!cl){h+='<div class="isec-b">';
+   if(sec.custom==="base"){h+='<table class="itbl"><thead><tr><th>設定</th><th class="v">機械割</th><th class="v">初当たり</th></tr></thead><tbody>';
+    for(var b=0;b<SETS.length;b++){var s=SETS[b];h+='<tr><td><span class="idot" style="background:'+SC[s]+'"></span>設'+s+'</td><td class="v" style="color:'+SC[s]+'">'+WARI[s]+'%</td><td class="v" style="color:'+SC[s]+'">1/'+HITX[s]+'</td></tr>';}
+    h+='</tbody></table>';}
+   else{h+='<table class="itbl"><tbody>';
+    for(var j=0;j<sec.rows.length;j++){var row=sec.rows[j],lvl=row[2];
+     h+='<tr><td>'+(lvl?'<span class="idot" style="background:'+SC[lvl]+'"></span>':'')+row[0]+'</td><td class="v">'+(lvl?'<span class="ibadge" style="background:'+SC[lvl]+'">'+row[1]+'</span>':row[1])+'</td></tr>';}
+    h+='</tbody></table>';}
+   if(sec.note)h+='<div class="inote">'+sec.note+'</div>';
+   h+='</div>';}
+  h+='</div>';}
+ h+='</div>';ct.innerHTML=h}
+
+function rExp(){var ct=document.getElementById("ct"),E=estimate(),s=stats(),tG=totalG();
+ var t="━━ ヴァルヴレイヴ2 ━━\n"+new Date().toLocaleString("ja-JP")+"\n\n【推定】\n";
+ if(E.used){t+="最有力: 設定"+E.best+" ("+(E.bestP*100).toFixed(0)+"%) / 期待値"+E.exp.toFixed(2)+"\n分布: ";
+  for(var i=0;i<SETS.length;i++)t+="設"+SETS[i]+" "+((E.post[SETS[i]]||0)*100).toFixed(0)+"% ";t+="\n";
+  if(E.hardMin>1)t+="★設定"+E.hardMin+"以上確定 ("+E.confList.join("・")+")\n";
+  t+="根拠: "+E.reasons.join(" / ")+"\n";}else t+="データ不足\n";
+ t+="\n【集計】総G:"+tG+"\n";
+ if(tG>0&&s.hit>0)t+="初当たり合算: 1/"+Math.round(tG/s.hit)+" ("+s.hit+"回)\n";
+ t+="革命BN:"+s.kaku+" 決戦BN:"+s.kessen+" 革命RUSH:"+s.at+" 超革命:"+s.sat+"\n";
+ if(s.cz)t+="CZ(ドルシア): "+s.czS+"/"+s.cz+"\n";
+ var zp=zenPt();if(zp.tot)t+="規定pt≤400(2周期目以降): "+zp.lo+"/"+zp.tot+"\n";
+ if(CC.barHit)t+="BAR直撃: "+CC.barDirect+"/"+CC.barHit+"\n";
+ var hT=CC.haraOK+CC.haraNG;if(hT)t+="ハラキリDR: "+CC.haraOK+"/"+hT+"\n";
+ t+="\n【タイムライン】\n";
+ for(var j=0;j<LOG.length;j++){var e=LOG[j],ev=EVMAP[e.ev],g=e.g||"0";
+  var gF=(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend")?"【"+g+"】":g;
+  t+=gF+"　"+(ev?ev.l:e.ev)+"　"+buildNote(e).replace(/<[^>]+>/g,"")+"\n";}
+ ct.innerHTML='<div class="exp"><div class="exp-h">長押し→すべて選択→コピー</div><textarea class="exp-ta" id="eTA" readonly>'+t.replace(/</g,"&lt;")+'</textarea></div>';
+ var ta=document.getElementById("eTA");if(ta){ta.focus();ta.setSelectionRange(0,ta.value.length)}}
+
+/* ===== アクション ===== */
+function addEntry(){if(!canAdd())return;var e={ev:curEv,g:curG||"0"},ev=EVMAP[curEv];
+ if(ev.cat==="zencho"){e.cyc=curCyc;e.pt=curPt;if(curStage)e.stage=curStage;}
+ if(ev.cat==="enshutsu"){e.encat=curCat;e.enopt=curOpt;}
+ if(curRes){if(curEv==="atend")e.scr2=curRes;else e.res=curRes}
+ if(curScr){e.scr=curScr;if(SCR2CK[curScr])CC[SCR2CK[curScr]]++;} // 終了画面→カウンター自動加算
+ if(curBin)e.bin=curBin;
+ if(curNote)e.note=curNote;if(curMai)e.mai=curMai;
+ if(curEv==="atend"&&curMai){var m=parseInt(curMai)||0;if(m>=666)CC.o666++;else if(m>=555)CC.o555++;else if(m>=456)CC.o456++;}
+ if(curEv==="at"||curEv==="sat")inAT=true;if(curEv==="atend")inAT=false;
+ LOG.push(e);curEv=null;curG="";curRes=null;curScr=null;curBin=null;curCat=null;curOpt=null;curMai="";curNote="";curCyc=null;curPt=null;curStage=null;save();render()}
+
+function doRst(){if(!rstP){rstP=true;if(rstT)clearTimeout(rstT);rstT=setTimeout(function(){rstP=false;render()},3000);render();return}
+ LOG=[];initC();inAT=false;save();rstP=false;render()}
+
+document.getElementById("W").addEventListener("click",function(ev){var el=ev.target;
+ for(var i=0;i<6&&el&&el!==this;i++){if(el.dataset){
+  if(el.dataset.tab){TAB=el.dataset.tab;render();return}
+  if(el.dataset.grp!==undefined){curGroup=(curGroup===el.dataset.grp?null:el.dataset.grp);curEv=null;curRes=null;curScr=null;curBin=null;curMai="";render();return}
+  if(el.dataset.ev){curEv=(curEv===el.dataset.ev?null:el.dataset.ev);curGroup=(curEv?(EV2GRP[curEv]||null):curGroup);curRes=null;curScr=null;curBin=null;curCat=null;curOpt=null;curMai="";curCyc=null;curPt=null;curStage=null;render();return}
+  if(el.dataset.cyc!==undefined){curCyc=(curCyc===+el.dataset.cyc?null:+el.dataset.cyc);curPt=null;curStage=null;render();return}
+  if(el.dataset.pt!==undefined){curPt=(curPt===+el.dataset.pt?null:+el.dataset.pt);render();return}
+  if(el.dataset.stage!==undefined){curStage=(curStage===el.dataset.stage?null:el.dataset.stage);render();return}
+  if(el.dataset.encat!==undefined){curCat=(curCat===el.dataset.encat?null:el.dataset.encat);curOpt=null;render();return}
+  if(el.dataset.enopt!==undefined){curOpt=(curOpt===el.dataset.enopt?null:el.dataset.enopt);render();return}
+  if(el.dataset.res!==undefined){curRes=(curRes===el.dataset.res?null:el.dataset.res);render();return}
+  if(el.dataset.scr!==undefined){curScr=(curScr===el.dataset.scr?null:el.dataset.scr);render();return}
+  if(el.dataset.bin!==undefined){curBin=(curBin===el.dataset.bin?null:el.dataset.bin);render();return}
+  if(el.dataset.a==="add"){addEntry();return}
+  if(el.dataset.del!==undefined){LOG.splice(parseInt(el.dataset.del),1);save();load();render();return}
+  if(el.dataset.tog){COL[el.dataset.tog]=!COL[el.dataset.tog];render();return}
+  if(el.dataset.itog){infoCol[el.dataset.itog]=!infoCol[el.dataset.itog];render();return}
+  if(el.dataset.ci){CC[el.dataset.ci]++;save();render();return}
+  if(el.dataset.cd){if(CC[el.dataset.cd]>0)CC[el.dataset.cd]--;save();render();return}
+ }el=el.parentElement}});
 document.getElementById("W").addEventListener("input",function(ev){
-if(ev.target.id==="iG")curG=ev.target.value;
-if(ev.target.id==="iN")curNote=ev.target.value;
-if(ev.target.id==="iMai")curMai=ev.target.value});
+ if(ev.target.id==="iG")curG=ev.target.value;
+ if(ev.target.id==="iN")curNote=ev.target.value;
+ if(ev.target.id==="iMai")curMai=ev.target.value});
 
 load();render();
 </script>
