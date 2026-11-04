@@ -147,6 +147,9 @@ var SIG_BARDIRECT={1:.03,2:.04,4:.05,5:.06,6:.07};
    ※50G/100G/究極=ドライブは有利区間切れ後に集中（切れ前/中革命は約2%）。複数設定の公開解析値が乏しく近似値。*/
 var SIG_HARA={1:.053,2:.063,4:.125,5:.143,6:.167};
 var SIG_TOKU={1:.01,2:.02,4:.04,5:.08,6:.12};
+/* ハラキリDRを推定に入れる最小の連数。設1=5.3%/設6=16.7% は差が小さく、20連でも
+   3/20 の尤度比は設6:設1≒3.5倍にしかならない（40連で約12倍）。3連で判断するのは無意味。*/
+var MIN_HARA_REN=20;
 /* 規定pt≤400確率(近似)=特殊テーブル選択率 + 通常テーブルでの≤400率(約0.6) */
 var P400={};SETS.forEach(function(s){P400[s]=SIG_TOKU[s]+(1-SIG_TOKU[s])*0.6});
 var ENDSCR={
@@ -165,6 +168,9 @@ var EVS=[
  {id:"zencho",l:"前兆",s:"規定pt",c:"#64b5f6",cat:"zencho"},
  {id:"enshutsu",l:"演出/示唆",c:"#80cbc4",cat:"enshutsu"},
  {id:"dorusia",l:"ドルシア",s:"CZ",c:"#42a5f5",cat:"cz"},
+ /* 2026-11-04（ユーザー指示）追加。⚠️ ルーンドライブ自体に公開された設定差は無いので
+    記録だけ（推測には加算しない）。昇格チャレンジは約1/7でルーンを引くとボーナス昇格。 */
+ {id:"rune",l:"ルーンドライブ",s:"昇格CH",c:"#7e57c2",cat:"rune"},
  {id:"kaku",l:"革命BN",c:"#ef5350",cat:"bn_k"},
  {id:"kessen",l:"決戦BN",s:"REG",c:"#ffa726",cat:"bn"},
  {id:"at",l:"革命RUSH",s:"AT",c:"#ce93d8",cat:"at"},
@@ -174,7 +180,7 @@ var EVS=[
 ];
 var EVMAP={};EVS.forEach(function(e){EVMAP[e.id]=e});
 /* 記録タブ 上段レイアウト（ボーナス/ATはグループ。タップで内訳表示） */
-var EV_LAYOUT=[{ev:"zencho"},{ev:"enshutsu"},{ev:"dorusia"},
+var EV_LAYOUT=[{ev:"zencho"},{ev:"enshutsu"},{ev:"dorusia"},{ev:"rune"},
  {grp:"bonus",l:"ボーナス",c:"#ef5350",mem:["kaku","kessen"]},
  {grp:"at",l:"AT",c:"#ce93d8",mem:["at","sat"]},
  {ev:"atend"},{ev:"other"}];
@@ -224,6 +230,9 @@ var BONUS_IN=[
 var CZ_RES=[{id:"s",l:"成功(当選)"},{id:"f",l:"失敗"}];
 var BAR_RES=[{id:"direct",l:"AT直撃"},{id:"none",l:"恩恵なし"}];
 var HARA_RES=[{id:"ok",l:"突破(ドライブ)"},{id:"ng",l:"失敗"}];
+/* ルーンドライブ（昇格チャレンジ）の結果。2026-11-04 ユーザー指示で追加 */
+var RUNE_RES=[{id:"rbonus",l:"ボーナス昇格"},{id:"rat",l:"マリエ覚醒",s:"AT濃厚"},
+ {id:"rbar",l:"バー揃い",s:"革命BN濃厚"},{id:"rng",l:"昇格なし"}];
 var AT_ENDSCR=[{id:"def",l:"デフォ"},{id:"photo",l:"写真あり(6濃厚)"}];
 var ZEN_CYC=[1,2,3,4,5,6];
 var ZEN_PT=[100,200,300,400,500,600];
@@ -247,7 +256,7 @@ var CNTS=[
  {id:"magi",t:"✨ マギウスマーク",items:[
    {k:"magi4",l:"4個",h:"設4↑"},{k:"magi5",l:"5個",h:"設5↑"},{k:"magi6",l:"6個",h:"設6",hi:1}]},
  {id:"conf",t:"🏆 枚数・G数 確定示唆",items:[
-   {k:"o456",l:"456枚OVER",h:"設4↑"},{k:"o555",l:"555枚OVER",h:"設5↑"},{k:"o666",l:"666枚OVER",h:"設6",hi:1},
+   {k:"o456",l:"456枚OVER表示",s:"演出。実枚数ではない",h:"設4↑"},{k:"o555",l:"555枚OVER表示",s:"演出。実枚数ではない",h:"設5↑"},{k:"o666",l:"666枚OVER表示",s:"演出。実枚数ではない",h:"設6",hi:1},
    {k:"g22",l:"開始+22G",h:"設2↑"},{k:"g44",l:"開始+44G",h:"設4↑"},{k:"g66",l:"開始+66G",h:"設6",hi:1}]}
 ];
 var ALLCK=[];CNTS.forEach(function(s){s.items.forEach(function(i){ALLCK.push(i.k)})});
@@ -276,11 +285,21 @@ function totalG(){var tot=0,mx=0;for(var i=0;i<LOG.length;i++){var e=LOG[i],g=pa
  if(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend"){if(e.ev==="atend"){tot+=mx;mx=0}continue}
  if(g>mx)mx=g}tot+=mx;return tot}
 
+/* ⚠️ 初当たりの数え方（2026-10-27 修正）
+   革命RUSH(at)/超革命RUSH(sat) は**革命BN経由**で入るので、BNと一緒に数えると
+   1回の初当たりが2回計上される。直撃(BAR揃い)だけは BN を経由しないので足す。
+   旧: s.hit = kaku+kessen+at+sat （二重計上）
+   新: s.hit = kaku+kessen+barDirect
+   ⚠️ そもそも設1=1/476・設6=1/456 で**設定差は4.4%**。5000G・11回(=1/455)でも
+      事後分布は一様のまま＝正しく数えてもほぼ動かない。二重計上したときだけ
+      設6へ動く（5000G20回で設6 24%/設1 16%）＝危険なだけの信号だった。 */
 function stats(){var s={cz:0,czS:0,kaku:0,kessen:0,at:0,sat:0};
  for(var i=0;i<LOG.length;i++){var e=LOG[i];
   if(e.ev==="dorusia"){s.cz++;if(e.res==="s")s.czS++}
   if(e.ev==="kaku")s.kaku++;if(e.ev==="kessen")s.kessen++;if(e.ev==="at")s.at++;if(e.ev==="sat")s.sat++}
- s.hit=s.kaku+s.kessen+s.at+s.sat;return s}
+ s.hit=s.kaku+s.kessen+(CC.barDirect||0);   /* AT/超ATはBN経由なので数えない */
+ s.atAll=s.at+s.sat;                        /* 表示用（AT消化回数） */
+ return s}
 
 /* 前兆(規定pt)からの特殊テーブル弱シグナル: 2周期目以降で≤400pt */
 function zenPt(){var lo=0,tot=0;
@@ -289,28 +308,50 @@ function zenPt(){var lo=0,tot=0;
 
 /* ============================================================ ベイズ推定 ============================================================ */
 function estimate(){
- var ll={},i,s,reasons=[],hardMin=0,conf=[],used=false;
+ var ll={},i,s,reasons=[],warns=[],hardMin=0,conf=[],used=false;
  for(i=0;i<SETS.length;i++)ll[SETS[i]]=0;
- function bino(succ,trials,rates,label){if(!trials)return;used=true;
+ /* ★2026-10-27 修正: 母数が足りない／観測率が公表値の上限を超えるときは尤度に入れない。
+    どちらも最尤が表の上端(設6)に張り付き、設1でも普通に起こる事象で「設定6」と出ていた。
+    例) 継続3連のうちドライブ1回=33% は設6の公表値16.7%の2倍＝表のどの設定でも説明できない
+    （設1でも3連中1回以上ドライブは15%で起こる）。下振れ側は log(1-p) の差が小さく
+    張り付かないので、弾くのは上振れ側だけでよい。 */
+ function bino(succ,trials,rates,label,minN){if(!trials)return;
+  /* ループ変数は局所に。outer の i/s は他の集計でも使い回されている。 */
+  var hi=-Infinity,ii;for(ii=0;ii<SETS.length;ii++)if(rates[SETS[ii]]>hi)hi=rates[SETS[ii]];
+  if(trials<(minN||1)){reasons.push(label+" "+succ+"/"+trials+" ※母数"+(minN||1)+"未満→推定に非加算");return}
+  /* 「表のどの設定でも説明できない」観測を弾く。単に obs>hi で弾くと 1/10(10%) のような
+     ただのブレまで落ちるので、上限+2σ（二項分布の標準偏差）を超えたときだけにする。 */
+  var oob=hi*trials+2*Math.sqrt(trials*hi*(1-hi));
+  if(succ>oob){reasons.push(label+" "+succ+"/"+trials+" ※公表値の上限"+(hi*100).toFixed(1)+"%を大きく超える→推定に非加算");return}
+  used=true;
   for(i=0;i<SETS.length;i++){s=SETS[i];var p=Math.min(.999,Math.max(.001,rates[s]));ll[s]+=succ*Math.log(p)+(trials-succ)*Math.log(1-p);}
   reasons.push(label+" "+succ+"/"+trials);}
  // 初当たり合算
  var tG=totalG(),st=stats();
- if(tG>=800&&st.hit>0){used=true;for(i=0;i<SETS.length;i++){s=SETS[i];var p=1/HITX[s];ll[s]+=st.hit*Math.log(p)+(tG-st.hit)*Math.log(1-p);}
-  reasons.push("初当たり 1/"+Math.round(tG/st.hit));}
+ /* 0回も情報（最強の低設定証拠）なので st.hit>0 のゲートは外す。 */
+ if(tG>=800){used=true;for(i=0;i<SETS.length;i++){s=SETS[i];var p=1/HITX[s];ll[s]+=st.hit*Math.log(p)+(tG-st.hit)*Math.log(1-p);}
+  reasons.push("初当たり "+st.hit+"回/"+tG+"G"+(st.hit?" = 1/"+Math.round(tG/st.hit):"")+" ※設定差4%＝ほぼ無情報");}
  // 終了画面（カウンター集計）
  var escN=0;END_FRAMES.forEach(function(f){var n=CC[SCR2CK[f.k]];if(n>0){escN+=n;used=true;
    for(i=0;i<SETS.length;i++){s=SETS[i];ll[s]+=n*Math.log(Math.max(0.4,ENDSCR[f.k][s])/100);}}});
  if(escN)reasons.push("終了画面 "+escN+"回");
  // BAR直撃 / ハラキリ / 規定pt / サブ液晶
- if(CC.barHit>0)bino(CC.barDirect,CC.barHit,SIG_BARDIRECT,"BAR直撃");
+ if(CC.barHit>0)bino(CC.barDirect,CC.barHit,SIG_BARDIRECT,"BAR直撃",1);
  var renT=CC.g10+CC.g20+CC.g50+CC.g100+CC.gUlt;
  var drive=CC.g50+CC.g100+CC.gUlt; /* 50G/100G/究極=ハラキリドライブ発生 */
- if(renT>=3)bino(drive,renT,SIG_HARA,"ハラキリDR("+drive+"/"+renT+"連)");
- var zp=zenPt();if(zp.tot>=4)bino(zp.lo,zp.tot,P400,"規定pt≤400");
+ bino(drive,renT,SIG_HARA,"ハラキリDR",MIN_HARA_REN);
+ var zp=zenPt();bino(zp.lo,zp.tot,P400,"規定pt≤400",4);
  var subN=CC.subNone+CC.subHuman;if(subN>0){used=true;
    for(i=0;i<SETS.length;i++){s=SETS[i];ll[s]+=CC.subNone*Math.log(SUBMON.none[s]/100)+CC.subHuman*Math.log(SUBMON.human[s]/100);}
    reasons.push("サブ液晶 無"+CC.subNone+"/有"+CC.subHuman);}
+ /* ★終了画面の記録漏れ検出（2026-10-27）。白(デフォ)を押さずに色枠だけ記録すると
+    ENDSCR(白=設1で74%/設6で60%)の減点が入らず、**打つほど高設定に偏る**。
+    塞ぐのではなく気づけるようにする。 */
+ var scrEv=0,scrRec=0;
+ for(i=0;i<LOG.length;i++){var _e=LOG[i];
+  if(_e.ev==="dorusia"||_e.ev==="kaku"||_e.ev==="kessen"){scrEv++;if(_e.scr)scrRec++;}}
+ if(scrEv>=5&&scrRec<scrEv*0.8)
+  warns.push("終了画面を "+scrRec+"/"+scrEv+" しか記録していません。白(デフォ)を飛ばすと高設定に偏ります");
  // 確定・示唆（ハード制約）
  if(CC.o666||CC.g66||CC.magi6||CC.rdLiese||CC.e_gold){hardMin=6;conf.push("設6濃厚");}
  else{if(CC.o555||CC.magi5){hardMin=Math.max(hardMin,5);conf.push("設5以上");}
@@ -323,7 +364,7 @@ function estimate(){
  var post={};for(i=0;i<SETS.length;i++){s=SETS[i];post[s]=z?ex[s]/z:1/SETS.length;}
  var best=SETS[0],bp=0,esum=0,ent=0;
  for(i=0;i<SETS.length;i++){s=SETS[i];if(post[s]>bp){bp=post[s];best=s}esum+=s*post[s];if(post[s]>0)ent-=post[s]*Math.log(post[s]);}
- return {post:post,best:best,bestP:bp,exp:esum,used:used,reasons:reasons,hardMin:hardMin,confList:conf};}
+ return {post:post,best:best,bestP:bp,exp:esum,used:used,reasons:reasons,warns:warns,hardMin:hardMin,confList:conf};}
 
 /* ============================================================ RENDER ============================================================ */
 function render(){rHdr();rEst();rQS();rTabs();
@@ -344,7 +385,8 @@ function rEst(){var E=estimate(),h='';
   h+='<div class="bar-track"><div class="bar-fill" style="width:'+(p*100).toFixed(1)+'%;background:'+SC[s]+'"></div></div>';
   h+='<div class="bar-pct" style="color:'+(E.used&&p>=E.bestP?SC[s]:'rgba(255,255,255,.5)')+'">'+(p*100).toFixed(0)+'%</div></div>';}
  h+='</div>';
- if(E.hardMin>1){var cm=E.hardMin;h+='<div class="rng" style="background:'+SC[cm]+'22;color:'+SC[cm]+';border:1px solid '+SC[cm]+'">🎯 設定'+cm+'以上 確定（'+E.confList.join('・')+'）</div>';}
+ if(E.hardMin>1){var cm=E.hardMin;h+='<div class="rng" style="background:'+SC[cm]+'22;color:'+SC[cm]+';border:1px solid '+SC[cm]+'">🎯 設定'+cm+'以上 濃厚（'+E.confList.join('・')+'）</div>';}
+ if(E.warns&&E.warns.length)h+='<div class="est-note" style="background:#5d4037;color:#ffe0b2;border-radius:4px;padding:3px 5px">⚠️ '+E.warns.join(' / ')+'</div>';
  if(E.reasons.length)h+='<div class="est-note"><b>根拠:</b> '+E.reasons.join(' / ')+'</div>';
  document.getElementById("est").innerHTML=h}
 
@@ -365,7 +407,10 @@ function detRow(t,arr,key){var h='<div class="dt"><div class="dt-t">'+t+'</div><
  var cur=(key==="res"?curRes:key==="bin"?curBin:key==="sub"?curSub:key==="scr2"?curScr:null);
  for(var i=0;i<arr.length;i++){var r=arr[i];h+='<button type="button" class="dt-b'+(cur===r.id?' s':'')+'" data-'+key+'="'+r.id+'">'+r.l+(r.s?'<small style="opacity:.5"> '+r.s+'</small>':'')+'</button>';}
  return h+'</div></div>'}
-function detFrames(){var h='<div class="dt"><div class="dt-t">終了画面（枠色）</div><div class="dt-r">';
+function detFrames(){var h='<div class="dt"><div class="dt-t">終了画面（枠色）<small style="opacity:.6">　白(デフォ)も必ず押す。飛ばすと高設定に偏る</small></div><div class="dt-r">';
+ /* ⚠️ 「見ていない」は記録するがカウンターを増やさない（SCR2CK に無いキー）。
+    必須にはしない。強制すると「適当に白を押す」というもっと悪い嘘を誘発する。 */
+ h+='<button type="button" class="dt-b'+(curScr==="unseen"?" s":"")+'" data-scr="unseen" style="'+(curScr==="unseen"?"":"color:#78909C")+'">見ていない</button>';
  for(var i=0;i<END_FRAMES.length;i++){var f=END_FRAMES[i];h+='<button type="button" class="dt-b'+(curScr===f.k?' s':'')+'" data-scr="'+f.k+'" style="'+(curScr===f.k?'':'color:'+f.c)+'">'+f.l+'</button>';}
  return h+'</div></div>'}
 
@@ -409,13 +454,16 @@ function rRec(){var ct=document.getElementById("ct"),h='<div class="rec">';
    h+='<div style="font-size:9px;color:rgba(255,255,255,.3);margin-top:6px">これらはモード/周期/前兆の示唆（設定示唆ではないため推測には加算しません）。ピノ台詞は規定ポイントの示唆です。</div></div>';}
   // CZ
   if(ev.cat==="cz")h+=detRow("結果",CZ_RES,"res")+detFrames();
+  // ルーンドライブ（昇格チャレンジ）: 結果のみ。設定示唆は無いので推測には加算しない
+  if(ev.cat==="rune"){h+=detRow("結果",RUNE_RES,"res");
+   h+='<div style="font-size:9px;color:rgba(255,255,255,.3);margin-top:6px">昇格チャレンジ中は約1/7でルーンを引くとボーナスに昇格。バー揃いは革命BN濃厚（昇格CH中ならマリエ覚醒も）。<b>公開された設定差が無いため推測には加算しません。</b></div>';}
   // 革命BN: 終了画面 + ボーナス中示唆
   if(ev.cat==="bn_k")h+=detFrames()+detRow("ボーナス中の示唆",BONUS_IN,"bin");
   // 決戦BN: 終了画面
   if(ev.cat==="bn")h+=detFrames();
   // AT終了: 画面 + 枚数
   if(ev.cat==="atend"){h+=detRow("AT終了画面",AT_ENDSCR,"res");
-   h+='<div class="dt"><div class="dt-t">獲得枚数（456/555/666で自動示唆）</div><input type="number" inputmode="numeric" class="dt-f" id="iMai" value="'+esc(curMai)+'" placeholder="枚数"></div>';}
+   h+='<div class="dt"><div class="dt-t">獲得枚数（記録のみ・示唆には使わない）</div><input type="number" inputmode="numeric" class="dt-f" id="iMai" value="'+esc(curMai)+'" placeholder="枚数"></div>';}
   h+='<div class="dt"><input type="text" class="dt-f" id="iN" placeholder="メモ（任意）" value="'+esc(curNote)+'"></div>';}
  var ok=canAdd();
  h+='<button type="button" class="ab '+(ok?'ok':'no')+'" data-a="add">'+(ok?'✓ 記録する':(curEv?'↑ 内容を選択':'↑ イベントを選択'))+'</button>';
@@ -428,7 +476,8 @@ function canAdd(){if(!curEv)return false;var ev=EVMAP[curEv];
  return true}
 
 function buildNote(e){var b=[];
- var rl={s:"成功",f:"失敗",direct:"AT直撃",none:"恩恵なし",ok:"ドライブ突破",ng:"失敗",def:"デフォ",photo:"写真あり"};
+ var rl={s:"成功",f:"失敗",direct:"AT直撃",none:"恩恵なし",ok:"ドライブ突破",ng:"失敗",def:"デフォ",photo:"写真あり",
+   rbonus:"ボーナス昇格",rat:"マリエ覚醒(AT濃厚)",rbar:"バー揃い(革命BN濃厚)",rng:"昇格なし"};
  if(e.cyc){b.push(e.cyc+"周期-"+e.pt+"pt");if(e.stage){var zs=ZEN_STAGE.filter(function(x){return x.id===e.stage})[0];if(zs)b.push(zs.l)}}
  if(e.encat){var g=ENSHUTSU.filter(function(x){return x.id===e.encat})[0];
   if(g){var o=g.opts.filter(function(x){return x.id===e.enopt})[0];b.push(g.l+"："+(o?o.l:e.enopt)+(o&&o.s?"("+o.s+")":""))}}
@@ -488,7 +537,7 @@ var INFO=[
    ["ハラキリDR 設1/設2","1/19連(5.3%) / 1/16連(6.3%)"],
    ["ハラキリDR 設4/5/6","1/8(12.5%) / 1/7(14.3%) / 1/6(16.7%)",4],
    ["BAR揃いAT直撃 設1→6","3→4→5→6→7%"]],
-  note:"ドライブ発生率＝(50G+100G+究極)÷総連数。設1〜6で単調に上昇。★有利区間切れ後に集中（設5実戦値 約19.7%）、切れ前・中革命(革命RUSH5〜9連)ではほぼ出ない(約2%)ため、切れ後の継続で見ると設定差が明確。設1/2=15〜20連,設4↑=6〜8連の基準を5段階補間（複数設定の公開解析値が乏しく近似値）。10G/20Gは通常継続。BAR揃い約1/682。"},
+  note:"★母数20連未満は推定に入れない（3連で1回=33%は設6の公表値16.7%の2倍＝表の外。設1でも15%起こる）。ドライブ発生率＝(50G+100G+究極)÷総連数。設1〜6で単調に上昇。★有利区間切れ後に集中（設5実戦値 約19.7%）、切れ前・中革命(革命RUSH5〜9連)ではほぼ出ない(約2%)ため、切れ後の継続で見ると設定差が明確。設1/2=15〜20連,設4↑=6〜8連の基準を5段階補間（複数設定の公開解析値が乏しく近似値）。10G/20Gは通常継続。BAR揃い約1/682。"},
  {id:"i_round",t:"🎮 ラウンド開始画面(10セット毎)",rows:[
    ["マリエ(水着)","高設定弱"],["1号機ルーン漏れ","高設定強"],["200年後のサキ","設定4以上濃厚",4],["リーゼロッテ","設定6濃厚",6]],
   note:"20セット目以降は「200年後のサキ」出現率上昇(設4・5で約20〜30%)。"},
@@ -496,7 +545,7 @@ var INFO=[
    ["456枚OVER","設定4以上",4],["555枚OVER","設定5以上",5],["666枚OVER","設定6濃厚",6],
    ["+22G","設定2以上",2],["+44G","設定4以上",4],["+66G","設定6濃厚",6],
    ["マギウスマーク4/5/6個","設4↑/設5↑/設6",4],["AT終了画面 写真あり","設定6濃厚",6]],
-  note:"引けば一発で設定域を確定。ツール上部の推定に自動反映。"},
+  note:"引けば一発で設定域が絞れる。ツール上部の推定に反映。★456/555/666枚OVERは上位AT中の順目・ゾロ目で出る「獲得枚数表示」という演出（設4〜6で約1〜3%・設1/2では出ない）。ATの実獲得枚数ではないので、演出を見たときだけ押すこと（枚数欄からは自動加算しない）。"},
  {id:"i_sub",t:"📡 サブ液晶(バッフェ)",rows:[["無人タイプ","奇数設定示唆"],["有人タイプ","偶数設定示唆"]],
   note:"振り分け例 設1=無人55/有人45、設2=無人45/有人55。弱い示唆。"},
  {id:"i_eye",t:"🖼️ アイキャッチ（背景+影）",rows:[
@@ -540,15 +589,21 @@ function rExp(){var ct=document.getElementById("ct"),E=estimate(),s=stats(),tG=t
  var t="━━ ヴァルヴレイヴ2 ━━\n"+new Date().toLocaleString("ja-JP")+"\n\n【推定】\n";
  if(E.used){t+="最有力: 設定"+E.best+" ("+(E.bestP*100).toFixed(0)+"%) / 期待値"+E.exp.toFixed(2)+"\n分布: ";
   for(var i=0;i<SETS.length;i++)t+="設"+SETS[i]+" "+((E.post[SETS[i]]||0)*100).toFixed(0)+"% ";t+="\n";
-  if(E.hardMin>1)t+="★設定"+E.hardMin+"以上確定 ("+E.confList.join("・")+")\n";
-  t+="根拠: "+E.reasons.join(" / ")+"\n";}else t+="データ不足\n";
+ }else t+="データ不足（推定に使える記録がまだ無い）\n";
+ /* ★2026-10-27 修正: 濃厚判定と根拠を if(E.used) の外へ出した。内側だと「画面は
+    🎯設定6以上と出ているのにエクスポートは『データ不足』1行」になり、非加算の理由
+    （※母数20未満 等）も消えて、何が弾かれたのか分からなかった。 */
+ if(E.hardMin>1)t+="★設定"+E.hardMin+"以上濃厚 ("+E.confList.join("・")+")\n";
+ if(E.warns&&E.warns.length)t+="⚠️ "+E.warns.join(" / ")+"\n";
+ if(E.reasons.length)t+="根拠: "+E.reasons.join(" / ")+"\n";
  t+="\n【集計】総G:"+tG+"\n";
- if(tG>0&&s.hit>0)t+="初当たり合算: 1/"+Math.round(tG/s.hit)+" ("+s.hit+"回)\n";
+ if(tG>0)t+="初当たり: "+s.hit+"回 (革命BN+決戦BN+AT直撃)"+(s.hit?" = 1/"+Math.round(tG/s.hit):"")+"\n";
  t+="革命BN:"+s.kaku+" 決戦BN:"+s.kessen+" 革命RUSH:"+s.at+" 超革命:"+s.sat+"\n";
  if(s.cz)t+="CZ(ドルシア): "+s.czS+"/"+s.cz+"\n";
  var zp=zenPt();if(zp.tot)t+="規定pt≤400(2周期目以降): "+zp.lo+"/"+zp.tot+"\n";
  if(CC.barHit)t+="BAR直撃: "+CC.barDirect+"/"+CC.barHit+"\n";
- var hT=CC.haraOK+CC.haraNG;if(hT)t+="ハラキリDR: "+CC.haraOK+"/"+hT+"\n";
+ var hR=CC.g10+CC.g20+CC.g50+CC.g100+CC.gUlt,hD=CC.g50+CC.g100+CC.gUlt;
+ if(hR)t+="ハラキリDR: "+hD+"/"+hR+"連"+(hR<MIN_HARA_REN?"（母数不足→推定に非加算）":"")+"\n";
  t+="\n【タイムライン】\n";
  for(var j=0;j<LOG.length;j++){var e=LOG[j],ev=EVMAP[e.ev],g=e.g||"0";
   var gF=(e.ev==="at"||e.ev==="sat"||e.ev==="hara"||e.ev==="atend")?"【"+g+"】":g;
@@ -564,7 +619,11 @@ function addEntry(){if(!canAdd())return;var e={ev:curEv,g:curG||"0"},ev=EVMAP[cu
  if(curScr){e.scr=curScr;if(SCR2CK[curScr])CC[SCR2CK[curScr]]++;} // 終了画面→カウンター自動加算
  if(curBin)e.bin=curBin;
  if(curNote)e.note=curNote;if(curMai)e.mai=curMai;
- if(curEv==="atend"&&curMai){var m=parseInt(curMai)||0;if(m>=666)CC.o666++;else if(m>=555)CC.o555++;else if(m>=456)CC.o456++;}
+ /* ★2026-10-27 削除: 実際の獲得枚数から 456/555/666 の示唆を自動で立てていた。
+    一次情報では「456枚OVER」等は上位AT中の順目・ゾロ目で出る**獲得枚数表示という演出**
+    （出現率 設4〜6で約1〜3%／設1・2では出ない）で、獲得枚数そのものではない。
+    ATは普通に666枚を超えるので、枚数を正直に入力すると必ず「設6濃厚」に固着していた。
+    → 演出を見たときだけ示唆タブのカウンターを押す運用に変更（自動加算はしない）。 */
  if(curEv==="at"||curEv==="sat")inAT=true;if(curEv==="atend")inAT=false;
  LOG.push(e);curEv=null;curG="";curRes=null;curScr=null;curBin=null;curCat=null;curOpt=null;curMai="";curNote="";curCyc=null;curPt=null;curStage=null;save();render()}
 
